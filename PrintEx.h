@@ -1,0 +1,1 @@
+  #include "MemoryPrinter.h"//EOF
