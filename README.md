@@ -12,9 +12,22 @@ A sample of libraries which can be extended are as follows:
 - `LiquidCrystal`
 - `Wire`
 - `SD`
-- `Any other library that inherits `Print` or `Stream`.
+- Any other library that inherits `Print` or `Stream`. 
 
+You can even create a library which provides the enhanced capabilities by default. Or alongside `Stream` for a bidirectional implementation.
 
+---
+
+## Interfaces
+Type  | Description
+------------- | -------------
+`PrintEx`  | This object provides an easy method of enhancing other `Print` based objects with the capabilites provided by `PrintExtension`.
+`StreamEx`  | This object provides an easy method of enhancing other `Stream` based objects with the capabilites provided by `PrintExtension` while maintaining the bidirectional interface.
+`GString`  | This object provides printing and formatting capabilities for blocks of memory (SRAM). The object can be passed to other Print functions.
+`EString`  | This is the EEPROM equivalent of `GString`. This essentially allows formatted printing of strings to the EEPROM. It also allows other `Print` based classes to print EEPROM data easily.
+`PString`  | This is a `PROGMEM` read-only version of `GString`. It allows printing of flash based strings.
+`PrintExtension`  | This is a core interface for `PrintEx`. It provides the formatting features such as `concat()` and `printf()`.
+`NonStreamingIO`  | This interface provides an extension to the `Print` class. It allows IO capabilities for derived objects that may not be streams. As in, the data printed to the object is still available for use.
 ---
 
 ## `printf` & `sprintf` documentation.
