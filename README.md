@@ -16,6 +16,38 @@ A sample of libraries which can be extended are as follows:
 
 You can even create a library which provides the enhanced capabilities by default. Or alongside `Stream` for a bidirectional implementation.
 
+
+### Contents:
+- [*Basic Usage.*](#basic-usage)
+- [*Interfaces.*](#interfaces)
+- [*Helpers & Tools.*](#helpers--tools)
+- [*`printf` & `sprintf` formatting documentation.*](#printf--sprintf-documentation)
+
+---
+## Basic Usage
+
+#### 1. `printf` for `Serial` and other `Stream` based objects.
+
+```C++
+#include <PrintEx.h>
+
+StreamEx mySerial = Serial;
+
+void setup() {
+  Serial.begin(9600);
+  mySerial.printf( "%20n\nFirst printf use!\n%20n", '=', '=' );
+}
+
+void loop() {}
+```
+
+If you do not need the 'read' capabilities of `Stream` you can use `PrintEx` instead:  
+`PrintEx serial = Serial;`
+
+Documentation for `printf` can be found [below](#printf--sprintf-documentation).
+
+The API also provides `concat()` and `concatln()` for use with all `Print` derived objects.
+
 ---
 
 ## Interfaces
@@ -25,11 +57,18 @@ Type  | Description
 `StreamEx`  | This object provides an easy method of enhancing other `Stream` based objects with the capabilites provided by `PrintExtension` while maintaining the bidirectional interface.
 `GString`  | This object provides printing and formatting capabilities for blocks of memory (SRAM). The object can be passed to other Print functions.
 `EString`  | This is the EEPROM equivalent of `GString`. This essentially allows formatted printing of strings to the EEPROM. It also allows other `Print` based classes to print EEPROM data easily.
-`PString`  | This is a `PROGMEM` read-only version of `GString`. It allows printing of flash based strings.
+`PString`  | This is a PROGMEM read-only version of `GString`. It allows printing of flash based strings.
 `PrintExtension`  | This is a core interface for `PrintEx`. It provides the formatting features such as `concat()` and `printf()`.
 `NonStreamingIO`  | This interface provides an extension to the `Print` class. It allows IO capabilities for derived objects that may not be streams. As in, the data printed to the object is still available for use.
 ---
 
+## Helpers & Tools
+
+Object  | Description
+------------- | -------------
+`NothingYet`  | Don't expect much.
+
+---
 ## `printf` & `sprintf` documentation.
 
 ```C++
