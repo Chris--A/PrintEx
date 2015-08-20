@@ -1,0 +1,20 @@
+
+#######################################
+# Syntax Coloring Map For PrintEx
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+PrintEx	KEYWORD1	
+StreamEx	KEYWORD1	
+GString	KEYWORD1	
+EString	KEYWORD1	
+PString	KEYWORD1	
+PrintExtension	KEYWORD1	
+NonStreamingIO	KEYWORD1	
+
+# The keywords below appear to be highlighted already.
+# sprintf
+# printf
