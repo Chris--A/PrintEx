@@ -1,8 +1,9 @@
 # `PrintEx` Library for Arduino ![Version 1.1.0](https://img.shields.io/badge/Version-1.1.0-blue.svg)
 
 **Written by:** *Christopher Andrews*.  
-Copyright 2015, Released under MIT licence.
+**Copyright:** _**2013**_*(GString)*-_**2015**_*(PrintEx)*, *Christopher Andrews, Released under MIT licence*.
 
+This library is the descendant of a library I wrote called `GString`
 This library allows extending any `Stream` or `Print` derived library with feature rich printing and formatting capabilities.
 
 A sample of libraries which can be extended are as follows:
