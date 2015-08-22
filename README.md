@@ -1,4 +1,4 @@
-# **`PrintEx`** Library for Arduino ![Version 1.1.0](https://img.shields.io/badge/Version-1.1.0-blue.svg)
+# `PrintEx` Library for Arduino ![Version 1.1.0](https://img.shields.io/badge/Version-1.1.0-blue.svg)
 
 **Written by:** *Christopher Andrews*.  
 **Copyright:** _**2013**_*(GString)*-_**2015**_*(PrintEx)*, *Christopher Andrews, Released under MIT licence*.
@@ -7,27 +7,61 @@ This library is the descendant of a library I wrote called `GString`
 This library allows extending any `Stream` or `Print` derived library with feature rich printing and formatting capabilities.
 
 A sample of libraries which can be extended are as follows:
-- `Serial`
-- `Ethernet`/`EthernetClient`
-- `Wifi`
+- [`Serial`](https://www.arduino.cc/en/Reference/Serial)
+- [**Ethernet** (`EthernetClient`,`Server`)](https://www.arduino.cc/en/Reference/Ethernet) 
+- [**WiFi** (`WiFiClient`, `Server`)](https://www.arduino.cc/en/Reference/WiFi)
+- [`SoftwareSerial`](https://www.arduino.cc/en/Reference/SoftwareSerial)
 - `LiquidCrystal`
-- `Wire`
-- `SD`
+- [`Wire`](https://www.arduino.cc/en/Reference/Wire)
+- [`SD`](https://www.arduino.cc/en/Reference/SD)
 - Any other library that inherits `Print` or `Stream`. 
 
 You can even create a library which provides the enhanced capabilities by default. Or alongside `Stream` for a bidirectional implementation.
 
-
 ### Contents:
 - [*Basic Usage.*](#basic-usage)
+  - Enhancing any `Stream` or `Print` based object.
+  - `concat()` & `concatln()`.
+  - `printf` formatting.
 - [*Interfaces.*](#interfaces)
 - [*Helpers & Tools.*](#helpers--tools)
 - [*`printf` & `sprintf` formatting documentation.*](#printf--sprintf-documentation)
 
 ---
 ## Basic Usage
+#### 1. Enhancing any `Stream` or `Print` based object.
+To extend an already existing object like `Serial`, or `EthernetClient` you'll need to make use of either `StreamEx` or `PrintEx`. 
 
-#### 1. `printf` for `Serial` and other `Stream` based objects.
+- `StreamEx`  
+This extends the `Print` interface while maintaining the ability to read. All exisiting `Print` & `Stream` functions are available for use. To use this class simply create a variable of type `StreamEx` and initialize it with your `Stream` based object.
+  ```
+  StreamEx myStream = Serial;
+  ```
+- `PrintEx`  
+This extends the `Print` interface. Only existing and enhanced `Print` functions are available for use. The ability to read is not available, however if the object you want enhanced is a `Stream`, you can use it in combination with the `PrintEx` object. To use this class create a variable of type `PrintEx` and initialize it with your `Print` based object.
+  ```
+  PrintEx myPrint = Serial;
+  ```
+#### 2. `concat()` & `concatln()`.
+
+```
+#include <PrintEx.h>
+
+StreamEx serial = Serial;
+
+void setup(){
+  Serial.begin(9600);
+  
+  serial.repeat( '=', 20 )
+        .concat("\nconcat(ln) test: ")
+        .concatln(3.1415f, 3)
+        .repeat( '=', 20 );
+}
+
+void loop() {}
+```
+
+#### 3. `printf` formatting.
 
 ```C++
 #include <PrintEx.h>
@@ -41,9 +75,6 @@ void setup() {
 
 void loop() {}
 ```
-
-If you do not need the 'read' capabilities of `Stream` you can use `PrintEx` instead:  
-`PrintEx serial = Serial;`
 
 Documentation for `printf` can be found [below](#printf--sprintf-documentation).
 
@@ -119,3 +150,4 @@ Object  | Description
                 %:    Escape character for printing '%'
     ****************************************************************/
 ```
+---

@@ -15,6 +15,14 @@ PString	KEYWORD1
 PrintExtension	KEYWORD1	
 NonStreamingIO	KEYWORD1	
 
+#######################################
+# Members (KEYWORD2)
+#######################################
+
+concatln	KEYWORD2
+repeat	KEYWORD2
+
 # The keywords below appear to be highlighted already.
 # sprintf
 # printf
+# concat
