@@ -1,1 +1,8 @@
-/********************************************************************************    Copyright 2015 Christopher Andrews.    https://github.com/Chris--A/PrintEx    Released under MIT licence.********************************************************************************/#define MYLIB "lib/MemoryPrinter.h"#include MYLIB
+/********************************************************************************
+    Copyright 2015 Christopher Andrews.
+    https://github.com/Chris--A/PrintEx
+
+    Released under MIT licence.
+********************************************************************************/
+
+#include "lib/MemoryPrinter.h"
