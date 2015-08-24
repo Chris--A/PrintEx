@@ -7,13 +7,13 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-PrintEx	KEYWORD1	
-StreamEx	KEYWORD1	
-GString	KEYWORD1	
-EString	KEYWORD1	
-PString	KEYWORD1	
-PrintExtension	KEYWORD1	
-NonStreamingIO	KEYWORD1	
+PrintEx	KEYWORD1
+StreamEx	KEYWORD1
+GString	KEYWORD1
+EString	KEYWORD1
+PString	KEYWORD1
+PrintExtension	KEYWORD1
+NonStreamingIO	KEYWORD1
 
 #######################################
 # Members (KEYWORD2)
@@ -21,6 +21,7 @@ NonStreamingIO	KEYWORD1
 
 concatln	KEYWORD2
 repeat	KEYWORD2
+repeatln	KEYWORD2
 
 # The keywords below appear to be highlighted already.
 # sprintf

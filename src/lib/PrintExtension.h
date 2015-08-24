@@ -82,7 +82,7 @@
 
 			PrintExtension &repeatln( const char *str, size_t size, unsigned char repeatCount ){
 				repeat( str, size, repeatCount );
-				write("\r\n");
+				println();
 				return *this;
 			}
 
@@ -99,7 +99,7 @@
 
 			PrintExtension &repeatln( const char &character, unsigned char count ){
 				_repeat(character, count);
-				write("\r\n"); //Shouldn't allocate RAM for string as there is a copy already used with println();
+				println();
 				return *this;
 			}
         protected:
