@@ -122,49 +122,49 @@ Each element and thier set of options is described in the tables below.
 
   Flag  | Description
   ------------- | -------------
-  `-` | Left-justify within the given field width; Right justification is the default.
-  `0` | When padding is specified, zeros are used instead of spaces.
+  **`-`** | Left-justify within the given field width; Right justification is the default.
+  **`0`** | When padding is specified, zeros are used instead of spaces.
   
 - **Width**  
   This option allows padding out data. It is also used to specify data for custom routines. 
 
   Value  | Description
   ------------- | -------------
-  `(number)` | Minimum number of characters to be printed. If the value to be printed is shorter than this number, the result is padded with blank spaces. The value is not truncated even if the result is larger.
-  `*` | The width is not specified in the format string, but as an additional integer value argument preceding the argument that has to be formatted.
+  **`(number)`** | Minimum number of characters to be printed. If the value to be printed is shorter than this number, the result is padded with blank spaces. The value is not truncated even if the result is larger.
+  **`*`** | The width is not specified in the format string, but as an additional integer value argument preceding the argument that has to be formatted.
   
   ---
   Some specifiers require additional data provided using the `width` parameter.
   
   Specifier  | Description
   ------------- | -------------
-  `%r` | The number of characters to read from the EEPROM.
-  `%n` | Number of times to run repeat function.
+  **`r`** | The number of characters to read from the EEPROM.
+  **`n`** | Number of times to run repeat function.
   
 - **Length**  
   This only has one value: `l`. If this value is present the behaviour of certain specifiers is changed.
 
   Specifier  | Description
   ------------- | -------------
-  `%d` or `%i` | Use `long` instead of `int`.
-  `%u` or `%x` | Use `unsigned long` instead of `unsigned int`.
-  `%n` | Repaet a string, instead of a character.
+  **`d`** or **`i`** | Use `long` instead of `int`.
+  **`u`** or **`x`** | Use `unsigned long` instead of `unsigned int`.
+  **`n`** | Repaet a string, instead of a character.
   
 - **Specifiers**
   
     Name  | Description
   ------------- | -------------
-  `s` | String ( null terminated ).
-  `p` | PROGMEM string. No formatting takes place, the string is printed directly.
-  `r` | EEPROM string. No formatting takes place, the string is printed directly.
-  `d` | Signed decimal integer ( 32bits max ).
-  `i` | Same as `d`.
-  `u` | Unsigned decimal integer ( 32bits max ).
-  `f` | Decimal floating point number.
-  `x` | Unsigned decimal integer ( 32bits max ).
-  `c` | Character.
-  `n` | Repeat function ( default character, see length ).
-  `%` | Escape character for printing `%`.
+  **`s`** | String ( null terminated ).
+  **`p`** | PROGMEM string. No formatting takes place, the string is printed directly.
+  **`r`** | EEPROM string. No formatting takes place, the string is printed directly.
+  **`d`** | Signed decimal integer ( 32bits max ).
+  **`i`** | Same as **`d`**.
+  **`u`** | Unsigned decimal integer ( 32bits max ).
+  **`f`** | Decimal floating point number.
+  **`x`** | Unsigned decimal integer ( 32bits max ).
+  **`c`** | Character.
+  **`n`** | Repeat function ( default character, see length ).
+  **`%`** | Escape character for printing **`%`**.
 
 ```C++
 #include <PrintEx.h>
@@ -186,21 +186,21 @@ All of these objects have the PrintEx functionality built in, there is no need t
 
 Object  | Description
 ------------- | -------------
-`DualWriter`  | Allows calling multiple `Print` interfaces through a single object.
-`Base64Writer`  | Any input this object receives is converted using Base64 encoding and written to its assigned `Print` interface.
-`NullStream`  | A data stream to nowhere.
+**`DualWriter`**  | Allows calling multiple `Print` interfaces through a single object.
+**`Base64Writer`**  | Any input this object receives is converted using Base64 encoding and written to its assigned `Print` interface.
+**`NullStream`**  | A data stream to nowhere.
 ---
 
 ## Interfaces
 Type  | Description
 ------------------------------- | -------------
-`PrintEx`  | This object provides an easy method of enhancing other `Print` based objects with the capabilities provided by `PrintExtension`.
-`StreamEx`  | This object provides an easy method of enhancing other `Stream` based objects with the capabilities provided by `PrintExtension` while maintaining the bidirectional interface.
-`GString`  | This object provides printing and formatting capabilities for blocks of memory (SRAM). The object can be passed to other Print functions.
-`EString`  | This is the EEPROM equivalent of `GString`. This essentially allows formatted printing of strings to the EEPROM. It also allows other `Print` based classes to print EEPROM data easily.
-`PString`  | This is a PROGMEM read-only version of `GString`. It allows printing of flash based strings.
-`PrintExtension`  | This is a core interface for `PrintEx`. It provides the formatting features such as `concat()` and `printf()`.
-`NonStreamingIO`  | This interface provides an extension to the `Print` class. It allows IO capabilities for derived objects that may not be streams. As in, the data printed to the object is still available for use.
+**`PrintEx`**  | This object provides an easy method of enhancing other `Print` based objects with the capabilities provided by `PrintExtension`.
+**`StreamEx`**  | This object provides an easy method of enhancing other `Stream` based objects with the capabilities provided by `PrintExtension` while maintaining the bidirectional interface.
+**`GString`**  | This object provides printing and formatting capabilities for blocks of memory (SRAM). The object can be passed to other Print functions.
+**`EString`**  | This is the EEPROM equivalent of `GString`. This essentially allows formatted printing of strings to the EEPROM. It also allows other `Print` based classes to print EEPROM data easily.
+**`PString`**  | This is a PROGMEM read-only version of `GString`. It allows printing of flash based strings.
+**`PrintExtension`**  | This is a core interface for `PrintEx`. It provides the formatting features such as `concat()` and `printf()`.
+**`NonStreamingIO`**  | This interface provides an extension to the `Print` class. It allows IO capabilities for derived objects that may not be streams. As in, the data printed to the object is still available for use.
 ---
 
 ## Custom Configuration.
