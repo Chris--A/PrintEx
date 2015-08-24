@@ -19,13 +19,13 @@ A sample of libraries which can be extended are as follows:
 - Any other library that inherits `Print` or `Stream`.
 
 ## Contents:
-- [*Basic Usage.*](#basic-usage)
+- [Basic Usage.](#basic-usage).
   - [Enhancing any `Stream` or `Print` based object](#1-enhancing-any-stream-or-print-based-object).
   - [Using chainable functions](#using-chainable-functions).
   - [`printf` formatting](#printf-formatting).
-- [*Interfaces.*](#interfaces)
-- [*Helpers & Tools.*](#helpers--tools)
-- [Custom configuration.](#custom-configuration)
+- [Helpers & Tools](#helpers--tools). 
+- [Interfaces](#interfaces).
+- [Custom configuration](#custom-configuration).
 
 ---
 ## Basic Usage
@@ -181,6 +181,16 @@ void loop() {}
 
 ---
 
+## Helpers & Tools
+All of these objects have the PrintEx functionality built in, there is no need to use `PrintEx` or `StreamEx` with these.
+
+Object  | Description
+------------- | -------------
+`DualWriter`  | Allows calling multiple `Print` interfaces through a single object.
+`Base64Writer`  | Any input this object receives is converted using Base64 encoding and written to its assigned `Print` interface.
+`NullStream`  | A data stream to nowhere.
+---
+
 ## Interfaces
 Type  | Description
 ------------------------------- | -------------
@@ -191,14 +201,6 @@ Type  | Description
 `PString`  | This is a PROGMEM read-only version of `GString`. It allows printing of flash based strings.
 `PrintExtension`  | This is a core interface for `PrintEx`. It provides the formatting features such as `concat()` and `printf()`.
 `NonStreamingIO`  | This interface provides an extension to the `Print` class. It allows IO capabilities for derived objects that may not be streams. As in, the data printed to the object is still available for use.
----
-
-## Helpers & Tools
-
-Object  | Description
-------------- | -------------
-`DualWriter`  | Allows calling multiple `Print` interfaces through a single object.
-`NullStream`  | A data stream to nowhere.
 ---
 
 ## Custom Configuration.

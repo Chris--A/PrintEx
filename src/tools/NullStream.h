@@ -5,11 +5,16 @@
     Released under MIT licence.
 ********************************************************************************/
 
-struct NullStream : Stream{
-	NullStream( void )             {}
-	int available( void )          { return 0; }
-	void flush( void )             { return; }
-	int peek( void )               { return -1; }
-	int read( void )               { return -1 };
-	size_t write( uint8_t u_Data ) { return u_Data, 0x01; }
-};
+#ifndef HEADER_NULLSTREAM
+    #define HEADER_NULLSTREAM
+
+	struct NullStream : Stream, PrintExtension{
+		NullStream()                 {}
+		int available()              { return 0; }
+		void flush()                 { return; }
+		int peek()                   { return -1; }
+		int read()                   { return -1; }
+		size_t write( uint8_t data ) { return data, 0x01; }
+	};
+
+#endif
