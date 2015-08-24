@@ -29,7 +29,7 @@ A sample of libraries which can be extended are as follows:
 
 ---
 ## Basic Usage
-##### 1. Enhancing any `Stream` or `Print` based object.
+#### 1. Enhancing any `Stream` or `Print` based object.
 To extend an already existing object like `Serial`, or `EthernetClient` you'll need to make use of either `StreamEx` or `PrintEx`. 
 
 - `StreamEx`  
@@ -61,7 +61,7 @@ void setup(){
 void loop() {}
 ```
   
-##### 2. Using chainable functions.
+#### 2. Using chainable functions.
 
 Every interface using this library incorporates an additional set of functions specifically designed for creating a chain like syntax. For example a series of `print()`/`println()` calls can be replaced with a chain.
 
@@ -110,7 +110,7 @@ void setup(){
 void loop() {}
 ```
 
-##### 3. `printf` formatting.
+#### 3. `printf` formatting.
 
 Formatting options use the following syntax:  
 `%[flags][width][length]specifier`
@@ -197,7 +197,7 @@ Type  | Description
 
 Object  | Description
 ------------- | -------------
-`NothingYet`  | Don't expect much.
+`DualWriter`  | Allows calling multiple `Print` interfaces through a single object.
 
 ---
 
