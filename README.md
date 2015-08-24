@@ -198,7 +198,7 @@ Type  | Description
 Object  | Description
 ------------- | -------------
 `DualWriter`  | Allows calling multiple `Print` interfaces through a single object.
-
+`NullStream`  | A data stream to nowhere.
 ---
 
 ## Custom Configuration.
