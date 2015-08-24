@@ -29,7 +29,7 @@
     #endif
 
     typedef size_t pft;
-	
+
 	#ifdef PRINTEX_LARGE_COUNTER
 		typedef uint16_t pfct;
 	#else
@@ -39,6 +39,10 @@
     class PrintExtension : public Print{
 
         public:
+
+			/***
+				Concat functionality.
+			***/
 
             template< typename T >
                 _INLINE_ PrintExtension &operator +=( const T &t )
@@ -60,32 +64,49 @@
                 _INLINE_ PrintExtension &concatln( const T &t, const int i )
                     { return println( t, i ), *this; }
 
-            pft printf( const char *format, ... );
-            
 
-			PrintExtension &repeat( const char *str, unsigned char repeatCount ){
+			/***
+				printf for objects.
+			***/
+
+            pft printf( const char *format, ... );
+
+			/***
+				Repeat functionality.
+			***/
+
+			PrintExtension &repeat( const char *str, size_t size, unsigned char repeatCount ){
+				while( repeatCount-- ) write( str, size );
 				return *this;
 			}
-			
-			PrintExtension &repeatln( const char *str, unsigned char repeatCount ){
-				repeat( str, repeatCount );
+
+			PrintExtension &repeatln( const char *str, size_t size, unsigned char repeatCount ){
+				repeat( str, size, repeatCount );
 				write("\r\n");
 				return *this;
 			}
-			
-			PrintExtension &repeat( const char &character, unsigned char count )
-				{ _repeat(character, count); return *this; }
 
-			PrintExtension &repeatln( const char &character, unsigned char count ){ 
+			PrintExtension &repeat( const char *str, unsigned char repeatCount )
+				{ return repeat( str, strlen(str), repeatCount ); }
+
+			PrintExtension &repeatln( const char *str, unsigned char repeatCount )
+				{ return repeatln( str, strlen(str), repeatCount ); }
+
+			PrintExtension &repeat( const char &character, unsigned char count ){
+				_repeat(character, count);
+				return *this;
+			}
+
+			PrintExtension &repeatln( const char &character, unsigned char count ){
 				_repeat(character, count);
 				write("\r\n"); //Shouldn't allocate RAM for string as there is a copy already used with println();
 				return *this;
-			}			
+			}
         protected:
-		
+
 			void _repeat( const char &character, unsigned char count );
             pft _printf( const char *format, const va_list &v_List );
-			
+
 			// Global sprintf replacement. To keep old version define PRINTEX_NO_SPRINTF (does not affect x.printf();)
             #ifndef PRINTEX_NO_SPRINTF
                 friend int sprintf( char * str, const char * format, ... );

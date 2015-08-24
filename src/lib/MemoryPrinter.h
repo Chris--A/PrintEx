@@ -7,12 +7,13 @@
 
 #ifndef HEADER_MEMORYPRINTER
     #define HEADER_MEMORYPRINTER
-	
+
 	#if __cplusplus < 201103L || !defined(__GXX_EXPERIMENTAL_CXX0X__)
 		#define CONSTEXPR
 	#else
+		#define ISCPP11
 		#define CONSTEXPR constexpr
-	#endif	
+	#endif
 
     #include "NonStreamingIO.h"
     #include "PrintExtension.h"
@@ -31,9 +32,9 @@
 			template< typename T >
 				CONSTEXPR EEPROMPrinter( const T dataPtr, const unsigned int length )
 					: NonStreamingIO( ( uint8_t* ) dataPtr, length ) {}
-					
+
 			size_t write( uint8_t data );
-			size_t printTo(Print& p) const;					
+			size_t printTo(Print& p) const;
 		} EString;
     #endif
 
@@ -42,7 +43,7 @@
         SRAMPrinter Class.
             An IO class for Print functionality targeting SRAM memory.
     ***************************************************************************/
-	
+
 	typedef struct SRAMPrinter : NonStreamingIO, PrintExtension{
 		template< typename T >
 			CONSTEXPR SRAMPrinter( const T dataPtr )
@@ -69,7 +70,7 @@
 
 			PROGMEMPrinter &operator =( uint8_t *t ) { return start = t, *this; }
 			size_t printTo(Print& p) const;
-			
+
 			uint8_t *start;
 		} PString;
     #endif

@@ -38,11 +38,11 @@
 
     /****************************************************************
         sprintf function.
-            This is a replacement for the globally accessible 
-            sprintf. It incorporates the features found in 
+            This is a replacement for the globally accessible
+            sprintf. It incorporates the features found in
             PrintExtension::printf().
     ****************************************************************/
-    
+
     #ifndef PRINTEX_NO_SPRINTF
         int sprintf( char * str, const char * format, ... ){
 
@@ -56,13 +56,13 @@
             return p_Return;
         }
     #endif
-    
+
     /****************************************************************
         GetParam_XXX functions.
-            The variations below proved to be far more efficient 
-            than using va_arg() directly in printf() when compiled 
-            on an AVR. 
-    ****************************************************************/    
+            The variations below proved to be far more efficient
+            than using va_arg() directly in printf() when compiled
+            on an AVR.
+    ****************************************************************/
 
     uint32_t GetParam_uint( const va_list &vList, const bool b16 ){
         if( b16 )
@@ -142,6 +142,11 @@
         return p_Return;
     }
 
+    #ifndef ISCPP11
+        bool formatTest( const char *&format, const char test ) __attribute__((always_inline));
+    #endif
+    CONSTEXPR bool formatTest( const char *&format, const char test ) { return *format == test ? ++format, true : false; }
+
 
     pft PrintExtension::_printf( const char *format, const va_list &vList ){
         unsigned int   width;
@@ -151,55 +156,33 @@
 
         for( ; *format ; ++format ){
 
-            if( *format == CHAR_PERCENT ){
-
-                ++format;
+            if( formatTest( format, CHAR_PERCENT ) ){
                 width = pad = 0x00;
 
                 bool largeType = false;
 
-                if( *format == CHAR_NULL )
-                    --format;
-                else if( *format == CHAR_PERCENT )
-                    cwrite( *format, counter );
+                if( *format == CHAR_NULL )         --format;
+                else if( *format == CHAR_PERCENT ) cwrite( *format, counter );
                 else{
 
-                    //Check for left justify.
-                    if( *format == CHAR_MINUS ){
-                        ++format;
-                        pad = PAD_RIGHT;
-                    }
-
-                    //Check for '0' pad specifier.
-                    if( *format == CHAR_ZERO ){
-                        ++format;
-                        pad |= PAD_ZERO;
-                    }
+                    //Check for left justify & '0' pad specifier.
+                    if( formatTest( format, CHAR_MINUS ) ) pad = PAD_RIGHT;
+                    if( formatTest( format, CHAR_ZERO ) )  pad |= PAD_ZERO;
 
                     //Check for passed length.
                     #ifndef PRINTF_NO_WIDTH_PARAM
-                        if( *format == CHAR_STAR ){
-                            ++format;
-                            width = ( unsigned int ) GetParam_int( vList );//va_arg( vList, int );
-
-                        //Width provided in format specifier.
-                        }else
+                        if( formatTest( format, CHAR_STAR ) ) width = ( unsigned int ) GetParam_int( vList );
+                        else //Width provided in format specifier (drop to for loop below).
                     #endif
 
                     //Calculate padding width.
-                    for ( ; *format >= CHAR_ZERO && *format <= CHAR_NINE; ++format ){
-                        width *= 10;
-                        width += *format - CHAR_ZERO;
-                    }
+                    for ( ; *format >= CHAR_ZERO && *format <= CHAR_NINE; ++format )(width *= 10) += *format - CHAR_ZERO;
 
                     char    padChar = ( pad & PAD_ZERO ) ? CHAR_ZERO : CHAR_SPACE;
                     GString convertStr( buffer );
 
                     //Get length flag if for larger types.
-                    if( *format == CHAR_l ){
-                        largeType = true;
-                        ++format;
-                    }
+                    if( formatTest( format, CHAR_l ) ) largeType = true;
 
                     //Convert argument into a string.
                     if( *format == CHAR_s ){                                                    //String.
@@ -287,3 +270,4 @@
     ****************************************************************/
 
     void PrintExtension::_repeat( const char &character, unsigned char count ) { while( count-- ) write( character ); }
+
