@@ -8,8 +8,8 @@
 #include <inttypes.h>
 #include "../../lib/PrintExtension.h"
 
-#ifndef HEADER_Base64Encoder
-    #define HEADER_Base64Encoder
+#ifndef HEADER_BASE64ENCODER
+    #define HEADER_BASE64ENCODER
 
     class Base64Encoder : public PrintExtension{
         public:

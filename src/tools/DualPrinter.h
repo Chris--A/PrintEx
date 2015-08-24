@@ -8,7 +8,7 @@
 #ifndef HEADER_DUALPRINTER
     #define HEADER_DUALPRINTER
 
-	class DualPrinter : PrintExtension{
+	class DualPrinter : public PrintExtension{
 	  public:
 		DualPrinter( Print *OutputA = 0x00, Print *OutputB = 0x00 ) : OutputA( OutputA ), OutputB( OutputB ){}
 

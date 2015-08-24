@@ -191,6 +191,7 @@ Object  | Description
 **`BufferedPrinter`**  | Useful for buffering output to send all at once, or to prevent sending 'packets' or transfers that are too long for the interface.
 **`DualPrinter`**  | Allows calling multiple `Print` interfaces through a single object.
 **`Base64Encoder`**  | Any input this object receives is converted using Base64 encoding and written to its assigned `Print` interface.
+**`URIEncoder`**  | Anything printed to this object will be URI encoded based on strictness. It supports URL encoding, HTML forms, and encoding the entire stream.
 **`RxTxCoutner`**  | This object keeps track of how much data passes through its interfaces.
 **`NullStream`**  | A data stream to nowhere.
 ---
