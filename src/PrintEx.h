@@ -7,7 +7,7 @@
 
 #include "lib/MemoryPrinter.h"
 
-#include "tools/DualWriter.h"
+#include "tools/DualPrinter.h"
 #include "tools/NullStream.h"
-#include "tools/Base64Writer/Base64Writer.h"
+#include "tools/Base64Printer/Base64Printer.h"
 #include "tools/RxTxCounter.h"

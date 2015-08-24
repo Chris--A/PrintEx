@@ -5,12 +5,12 @@
     Released under MIT licence.
 ********************************************************************************/
 
-#ifndef HEADER_DUALWRITER
-    #define HEADER_DUALWRITER
+#ifndef HEADER_DUALPRINTER
+    #define HEADER_DUALPRINTER
 
-	class DualWriter : PrintExtension{
+	class DualPrinter : PrintExtension{
 	  public:
-		DualWriter( Print *OutputA = 0x00, Print *OutputB = 0x00 ) : OutputA( OutputA ), OutputB( OutputB ){}
+		DualPrinter( Print *OutputA = 0x00, Print *OutputB = 0x00 ) : OutputA( OutputA ), OutputB( OutputB ){}
 
 		size_t write( uint8_t u_Data )
 		  {
