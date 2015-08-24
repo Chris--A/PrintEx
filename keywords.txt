@@ -16,6 +16,7 @@ PrintExtension	KEYWORD1
 NonStreamingIO	KEYWORD1
 DualWriter	KEYWORD1
 Base64Writer	KEYWORD1
+RxTxCounter	KEYWORD1
 NullStream	KEYWORD1
 
 #######################################

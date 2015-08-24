@@ -10,3 +10,4 @@
 #include "tools/DualWriter.h"
 #include "tools/NullStream.h"
 #include "tools/Base64Writer/Base64Writer.h"
+#include "tools/RxTxCounter.h"

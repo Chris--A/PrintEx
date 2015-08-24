@@ -6,7 +6,9 @@
 This library is the descendant of a library I wrote called `GString`.
 This library allows extending any `Stream` or `Print` derived library with feature rich printing and formatting capabilities. You can even create a library which provides the enhanced capabilities by default. Or alongside `Stream` for a bidirectional implementation.
 
-The `printf` implementation found in this library is unique. It has been built directly on top of the Arduino `Print` library rather than as a separate code base simply called from within. All the features found in **PrintEx** use a feature already implemented in `Print`. This means floating point support is actually using `Print::print( float );`. As a result, the implementation is not quite standard (can be standardized though), and contains additional functionality like support for EEPROM and PROGMEM data.
+The `printf` implementation found in this library is unique. It has been built directly on top of the Arduino `Print` library rather than as a separate code base simply called from within. All the features found in `printf` use a feature already implemented in `Print`. This means floating point support is actually using `Print::print( float );`. It also contains additional functionality like support for _EEPROM_/_PROGMEM_ data, repetition and chaining calls.
+
+This tool set also replaces the globally available version of `sprintf` with a version providing all the features of this library.
 
 A sample of libraries which can be extended are as follows:
 - [`Serial`](https://www.arduino.cc/en/Reference/Serial)
@@ -188,6 +190,7 @@ Object  | Description
 ------------- | -------------
 **`DualWriter`**  | Allows calling multiple `Print` interfaces through a single object.
 **`Base64Writer`**  | Any input this object receives is converted using Base64 encoding and written to its assigned `Print` interface.
+**`RxTxCoutner`**  | This object keeps track of how much data passes through its interfaces.
 **`NullStream`**  | A data stream to nowhere.
 ---
 
