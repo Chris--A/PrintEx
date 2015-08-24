@@ -9,6 +9,6 @@
 
 #include "tools/BufferedPrinter.h"
 #include "tools/DualPrinter.h"
-#include "tools/NullStream.h"
-#include "tools/Base64Printer/Base64Printer.h"
+#include "tools/Base64Encoder/Base64Encoder.h"
 #include "tools/RxTxCounter.h"
+#include "tools/NullStream.h"

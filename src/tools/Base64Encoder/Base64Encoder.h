@@ -8,14 +8,14 @@
 #include <inttypes.h>
 #include "../../lib/PrintExtension.h"
 
-#ifndef HEADER_Base64Printer
-    #define HEADER_Base64Printer
+#ifndef HEADER_Base64Encoder
+    #define HEADER_Base64Encoder
 
-    class Base64Printer : public PrintExtension{
+    class Base64Encoder : public PrintExtension{
         public:
 
-            Base64Printer( Print &output ) : out( output ), cursor( 0x00 ) {}
-            ~Base64Printer( void ) { flush(); }
+            Base64Encoder( Print &output ) : out( output ), cursor( 0x00 ) {}
+            ~Base64Encoder( void ) { flush(); }
 
             void flush();
 

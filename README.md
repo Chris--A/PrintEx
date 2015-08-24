@@ -23,8 +23,8 @@ A sample of libraries which can be extended are as follows:
 ## Contents:
 - [Basic Usage.](#basic-usage).
   - [Enhancing any `Stream` or `Print` based object](#1-enhancing-any-stream-or-print-based-object).
-  - [Using chainable functions](#using-chainable-functions).
-  - [`printf` formatting](#printf-formatting).
+  - [Using chainable functions](#2-using-chainable-functions).
+  - [`printf` formatting](#3-printf-formatting).
 - [Helpers & Tools](#helpers--tools). 
 - [Interfaces](#interfaces).
 - [Custom configuration](#custom-configuration).
@@ -190,7 +190,7 @@ Object  | Description
 ------------- | -------------
 **`BufferedPrinter`**  | Useful for buffering output to send all at once, or to prevent sending 'packets' or transfers that are too long for the interface.
 **`DualPrinter`**  | Allows calling multiple `Print` interfaces through a single object.
-**`Base64Printer`**  | Any input this object receives is converted using Base64 encoding and written to its assigned `Print` interface.
+**`Base64Encoder`**  | Any input this object receives is converted using Base64 encoding and written to its assigned `Print` interface.
 **`RxTxCoutner`**  | This object keeps track of how much data passes through its interfaces.
 **`NullStream`**  | A data stream to nowhere.
 ---
