@@ -71,14 +71,14 @@ The functions provided are as follows:
 
 Member  | Description
 ------------- | -------------
-`concat(...)`  | This functions exactly the same as `print()` however it does not return a count of bytes printed, but a reference to the calling object. This allows a chain of calls to be written.
-`concatln(...)`  | This is the `println()` equivalent of `concat()`.
-`repeat(char,count)`  | Writes a character `count` times to the output.
-`repeatln(char,count)`  | This is almost the same as `repeat()` however it also appends a new line at the end of the repeated character (`\r\n`).
-`repeat(str,repeatCount)`  | Writes a string (`str) `repeatCount` times to the output. The string must be null terminated.
-`repeatln(str,repeatCount)`  | Similar to `repeat(str, repeatCount)`, just appends a new line at the end.
-`repeat(str,size,repeatCount)`  | Writes a string `repeatCount` times to the output. The length of the string is specified by `size`. This allows writing part of a stirng or one that is not null terminated.
-`repeatln(str,size,repeatCount)`  | Similar to `repeat(str, size, repeatCount)`, just appends a new line at the end.
+**`concat(...)`**  | This functions exactly the same as `print()` however it does not return a count of bytes printed, but a reference to the calling object. This allows a chain of calls to be written.
+**`concatln(...)`**  | This is the `println()` equivalent of `concat()`.
+**`repeat(char,count)`**  | Writes a character `count` times to the output.
+**`repeatln(char,count)`**  | This is almost the same as `repeat()` however it also appends a new line at the end of the repeated character (`\r\n`).
+**`repeat(str,repeatCount)`**  | Writes a string (`str) `repeatCount` times to the output. The string must be null terminated.
+**`repeatln(str,repeatCount)`**  | Similar to `repeat(str, repeatCount)`, just appends a new line at the end.
+**`repeat(str,size,repeatCount)`**  | Writes a string `repeatCount` times to the output. The length of the string is specified by `size`. This allows writing part of a stirng or one that is not null terminated.
+**`repeatln(str,size,repeatCount)`**  | Similar to `repeat(str, size, repeatCount)`, just appends a new line at the end.
 
 Here is the basic idea behind chaining. Typically you'd be limited to writing code like this:
 
@@ -188,8 +188,9 @@ All of these objects have the PrintEx functionality built in, there is no need t
 
 Object  | Description
 ------------- | -------------
-**`DualWriter`**  | Allows calling multiple `Print` interfaces through a single object.
-**`Base64Writer`**  | Any input this object receives is converted using Base64 encoding and written to its assigned `Print` interface.
+**`BufferedPrinter`**  | Useful for buffering output to send all at once, or to prevent sending 'packets' or transfers that are too long for the interface.
+**`DualPrinter`**  | Allows calling multiple `Print` interfaces through a single object.
+**`Base64Printer`**  | Any input this object receives is converted using Base64 encoding and written to its assigned `Print` interface.
 **`RxTxCoutner`**  | This object keeps track of how much data passes through its interfaces.
 **`NullStream`**  | A data stream to nowhere.
 ---
@@ -215,19 +216,19 @@ These settings affect all library functions that use the features described.
 
 Define  | Action if defined
 ------------- | -------------
-`PRINTEX_NO_SPRINTF`  | Do not override the global `sprintf` with a version supporting all the features present in PrintEx.
-`PRINTEX_LARGE_COUNTER`  | Use a 16-bit value for print counters, instead of 8 bits (how many characters printed). If you do not care about the return count of print functions, leave the setting as is. This will allow more efficient code, however writes larger than 255 characters will have incorrect counts returned..
+**`PRINTEX_NO_SPRINTF`**  | Do not override the global `sprintf` with a version supporting all the features present in PrintEx.
+**`PRINTEX_LARGE_COUNTER`**  | Use a 16-bit value for print counters, instead of 8 bits (how many characters printed). If you do not care about the return count of print functions, leave the setting as is. This will allow more efficient code, however writes larger than 255 characters will have incorrect counts returned..
 
 ### `printf` specific flags.
 These settings only affect the `printf` implementation. To avoid inclusion outside of the `printf`/`sprintf` implementation, simply do not use the `PrintEx` function providing the feature (The compiler will remove unused code).
 
 Define  | Action if defined
 ------------- | -------------
-`PRINTEX_NO_WIDTH_PARAM`  | The width parameter must be specified inline and cannot be set to `*` specifying an additional input for the width.
-`PRINTEX_NO_PROGMEM`  | Do not include PROGMEM functionality (`%p`).
-`PRINTEX_NO_EEPROM`  | Do not include EEPROM functionality (`%r`).
-`PRINTEX_NO_FLOATING_POINT`  | Do not include support for floating point data (`%f`).
-`PRINTEX_NO_REPEAT`  | Do not include character repeat functionality (`%n`).
-`PRINTEX_NO_ERROR_CONDITION`  | Do not include error handling (`Error` is printed on bad inputs/failed operation).
+**`PRINTEX_NO_WIDTH_PARAM`**  | The width parameter must be specified inline and cannot be set to `*` specifying an additional input for the width.
+**`PRINTEX_NO_PROGMEM`**  | Do not include PROGMEM functionality (`%p`).
+**`PRINTEX_NO_EEPROM`**  | Do not include EEPROM functionality (`%r`).
+**`PRINTEX_NO_FLOATING_POINT`**  | Do not include support for floating point data (`%f`).
+**`PRINTEX_NO_REPEAT`**  | Do not include character repeat functionality (`%n`).
+**`PRINTEX_NO_ERROR_CONDITION`**  | Do not include error handling (`Error` is printed on bad inputs/failed operation).
 
 
