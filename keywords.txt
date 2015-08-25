@@ -18,6 +18,7 @@ BufferedPrinter	KEYWORD1
 DualPrinter	KEYWORD1
 Base64Encoder	KEYWORD1
 URIEncoder	KEYWORD1
+CRCStream	KEYWORD1
 RxTxCounter	KEYWORD1
 NullStream	KEYWORD1
 

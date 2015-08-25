@@ -1,16 +1,16 @@
 # `PrintEx` Library for Arduino ![Version 1.1.0](https://img.shields.io/badge/Version-1.1.0-blue.svg)
 
 **Written by:** *Christopher Andrews*.  
-**Copyright:** _**2013**_*(GString)*-_**2015**_*(PrintEx)*, *Christopher Andrews, Released under MIT licence*.
+**Copyright:** _**2013**_*(`GString`)*-_**2015**_*(`PrintEx`)*, *Christopher Andrews, Released under MIT licence*.
 
 This library is the descendant of a library I wrote called `GString`.
 This library allows extending any `Stream` or `Print` derived library with feature rich printing and formatting capabilities. You can even create a library which provides the enhanced capabilities by default. Or alongside `Stream` for a bidirectional implementation.
 
 The `printf` implementation found in this library is unique. It has been built directly on top of the Arduino `Print` library rather than as a separate code base simply called from within. All the features found in `printf` use a feature already implemented in `Print`. This means floating point support is actually using `Print::print( float );`. It also contains additional functionality like support for _EEPROM_/_PROGMEM_ data, repetition and chaining calls.
 
-This tool set also replaces the globally available version of `sprintf` with a version providing all the features of this library.
+This tool set also replaces the globally available version of `sprintf` with a version providing all the features of this library. Included in this package is a selection of helper objects I have created over the years. These include tools for validation, security, stability, and diagnostics.
 
-A sample of libraries which can be extended are as follows:
+A sample of Arduino libraries which can be extended are as follows:
 - [`Serial`](https://www.arduino.cc/en/Reference/Serial)
 - [Ethernet (`EthernetClient`,`Server`)](https://www.arduino.cc/en/Reference/Ethernet) 
 - [WiFi (`WiFiClient`, `Server`)](https://www.arduino.cc/en/Reference/WiFi)
@@ -26,8 +26,8 @@ A sample of libraries which can be extended are as follows:
   - [Using chainable functions](#2-using-chainable-functions).
   - [`printf` formatting](#3-printf-formatting).
 - [Helpers & Tools](#helpers--tools). 
-- [Interfaces](#interfaces).
-- [Custom configuration](#custom-configuration).
+- [Core Interfaces](#core-interfaces).
+- [Custom Configuration](#custom-configuration).
 
 ---
 ## Basic Usage
@@ -37,20 +37,20 @@ To extend an already existing object like `Serial`, or `EthernetClient` you'll n
 - `StreamEx`  
 This extends the `Print` interface while maintaining the ability to read. All existing `Print` and `Stream` functions are available for use. To use this class simply create a variable of type `StreamEx` and initialize it with your `Stream` based object.
 
-  ```C++
+  ```Arduino
   StreamEx myStream = Serial;
   ```
   
 - `PrintEx`  
 This extends the `Print` interface. Only existing and enhanced `Print` functions are available for use. The ability to read is not available, however if the object you want enhanced is a `Stream`, you can use it in combination with the `PrintEx` object. To use this class create a variable of type `PrintEx` and initialize it with your `Print` based object.
 
-  ```C++
+  ```Arduino
   PrintEx myPrint = Serial;
   ```
   
 If you need to use any functions specific to the object you are using (not found in `Print` or `Stream`) you will have to use the real object. For example, `Serial` implements `begin()` which is not part of `Stream`:
 
-```C++
+```Arduino
 #include <PrintEx.h>
 
 StreamEx mySerial = Serial;
@@ -77,25 +77,25 @@ Member  | Description
 **`repeatln(char,count)`**  | This is almost the same as `repeat()` however it also appends a new line at the end of the repeated character (`\r\n`).
 **`repeat(str,repeatCount)`**  | Writes a string (`str) `repeatCount` times to the output. The string must be null terminated.
 **`repeatln(str,repeatCount)`**  | Similar to `repeat(str, repeatCount)`, just appends a new line at the end.
-**`repeat(str,size,repeatCount)`**  | Writes a string `repeatCount` times to the output. The length of the string is specified by `size`. This allows writing part of a stirng or one that is not null terminated.
+**`repeat(str,size,repeatCount)`**  | Writes a string `repeatCount` times to the output. The length of the string is specified by `size`. This allows writing part of a string or one that is not null terminated.
 **`repeatln(str,size,repeatCount)`**  | Similar to `repeat(str, size, repeatCount)`, just appends a new line at the end.
 
 Here is the basic idea behind chaining. Typically you'd be limited to writing code like this:
 
-```C++
+```Arduino
 Serial.print( "ADC0 value: " );
 Serial.println( analogRead(A0), DEC );
 ```
 
 Now, when using a PrintEx based object you can replace the code with:
 
-```C++
+```Arduino
 mySerial.concat( "ADC0 value: " ).concatln( analogRead(A0), DEC );
 ```
 
 The usefulness of these functions is determined by your coding preference. Only `repeat()` and `repeatln()` are providing new functionality in terms of actual printing.
 
-```C++
+```Arduino
 #include <PrintEx.h>
 
 StreamEx serial = Serial;
@@ -114,10 +114,12 @@ void loop() {}
 
 #### 3. `printf` formatting.
 
+This library has a custom `printf` method for use with all interfaces found in this library. It is not as complete as a standard implementation, however it does support some custom features specific to Arduino. It does not support the precision parameter yet, however it is planned for a future version.
+
 Formatting options use the following syntax:  
 `%[flags][width][length]specifier`
 
-Each element and thier set of options is described in the tables below.  
+Each element and their set of options is described in the tables below.  
 
 - **Flags**  
   One or more of the flags below can be used. However each one used must be in the order used in this table.
@@ -150,11 +152,11 @@ Each element and thier set of options is described in the tables below.
   ------------- | -------------
   **`d`** or **`i`** | Use `long` instead of `int`.
   **`u`** or **`x`** | Use `unsigned long` instead of `unsigned int`.
-  **`n`** | Repaet a string, instead of a character.
+  **`n`** | Repeat a string, instead of a character.
   
 - **Specifiers**
   
-    Name  | Description
+    **Name**  | **Description**
   ------------- | -------------
   **`s`** | String ( null terminated ).
   **`p`** | PROGMEM string. No formatting takes place, the string is printed directly.
@@ -168,7 +170,7 @@ Each element and thier set of options is described in the tables below.
   **`n`** | Repeat function ( default character, see length ).
   **`%`** | Escape character for printing **`%`**.
 
-```C++
+```Arduino
 #include <PrintEx.h>
 
 StreamEx mySerial = Serial;
@@ -186,19 +188,25 @@ void loop() {}
 ## Helpers & Tools
 All of these objects have the PrintEx functionality built in, there is no need to use `PrintEx` or `StreamEx` with these.
 
+#### *The helpers and tools documentation is still under construction. This is just an overview of what is available.*
+
 Object  | Description
 ------------- | -------------
 **`BufferedPrinter`**  | Useful for buffering output to send all at once, or to prevent sending 'packets' or transfers that are too long for the interface.
 **`DualPrinter`**  | Allows calling multiple `Print` interfaces through a single object.
 **`Base64Encoder`**  | Any input this object receives is converted using Base64 encoding and written to its assigned `Print` interface.
 **`URIEncoder`**  | Anything printed to this object will be URI encoded based on strictness. It supports URL encoding, HTML forms, and encoding the entire stream.
+**`CRCStream`**  | This object calculates a running CRC for the input and output data streams of a `Stream` object associated with it.
 **`RxTxCoutner`**  | This object keeps track of how much data passes through its interfaces.
-**`NullStream`**  | A data stream to nowhere.
+**`NullStream`**  | A data stream with origins unknown.
 ---
 
-## Interfaces
+## Core Interfaces
+
+The objects listed in this section provide the core functionality for all interfaces inherting `PrintExtension`.
+
 Type  | Description
-------------------------------- | -------------
+------------- | -------------
 **`PrintEx`**  | This object provides an easy method of enhancing other `Print` based objects with the capabilities provided by `PrintExtension`.
 **`StreamEx`**  | This object provides an easy method of enhancing other `Stream` based objects with the capabilities provided by `PrintExtension` while maintaining the bidirectional interface.
 **`GString`**  | This object provides printing and formatting capabilities for blocks of memory (SRAM). The object can be passed to other Print functions.
