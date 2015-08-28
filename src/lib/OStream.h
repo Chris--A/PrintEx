@@ -23,64 +23,19 @@
 		unsigned char base;      //Base for integer printing.
 		unsigned char precision; //Floating point precision.
 	};
-
-	template< typename derived >
-		struct OStreamManipulator{
-			void updateParams(OStreamParams &params) const { static_cast< const derived* >( this )->updateParams( params ); }
-	};
-
-	struct _bin : OStreamManipulator< _bin >{ void updateParams(OStreamParams &params) const { params.base = BIN; } };
-	struct _oct : OStreamManipulator< _oct >{ void updateParams(OStreamParams &params) const { params.base = OCT; } };
-	struct _dec : OStreamManipulator< _dec >{ void updateParams(OStreamParams &params) const { params.base = DEC; } };
-	struct _hex : OStreamManipulator< _hex >{ void updateParams(OStreamParams &params) const { params.base = HEX; } };
-
-	static const _bin bin;
-	static const _oct oct;
-	static const _dec dec;
-	static const _hex hex;	
 	
-	struct precision : OStreamManipulator< precision >{
-		CONSTEXPR precision( unsigned char in ) : val(in) {}
-		void updateParams(OStreamParams &params) const { params.precision = val; }
-		const unsigned char val;
-	};
+	template< typename derived > struct OStreamManipulator;
 	
-	struct _endl{};
-	static const _endl endl;
-	
-	template< typename T > struct is_manipulator{
-		enum{
-			value = is_same<_bin, T>::value ||
-					is_same<_oct, T>::value ||
-					is_same<_dec, T>::value ||
-					is_same<_hex, T>::value ||
-					is_same<precision, T>::value,
-		};
-	};
-
 	struct OStream{
 
 		OStream( Print &host ) : out(host) {}
 		
 		/** Handle manipulators. **/
-		template< typename T > 
+		template< typename T >
 			OStream operator<< ( const OStreamManipulator<T> &manip ){
-				manip.updateParams( params );
+				manip.run(*this);
 				return *this;
-			}
-			
-		/** A specialization for endl. Should be a manipulator. **/
-		OStream operator<< ( const _endl &e ){
-			out.println();
-			return *this;
-		}
-						
-		/** A specialization for string literals. **/
-		template< typename T, unsigned N > 
-			OStream operator<< ( const T (&data)[N] ){
-				out.print( data );
-				return *this;
-		}
+		}		
 
 		/** A specialization for integer data. **/
 		template< typename T >
@@ -100,14 +55,14 @@
 			This substitution accepts:
 			- Printable derived objects.
 			- PROGMEM strings implemented using F() macros.
-			- c-strings (not string literals, pointers to null-terminated char arrays).
+			- c-strings (pointers and arrays).
 		***/
 		template< 
 			typename T,
 			typename = typename enable_if< 
-				!is_array<T>::value && 
-				!is_fundamental<T>::value && 
-				!is_manipulator<T>::value >::type >
+				!is_fundamental<T>::value &&
+				!is_base_of<OStreamManipulator<T>,T>::value
+			>::type>
 		OStream operator<< ( const T &data ){
 			out.print( data );
 			return *this;
@@ -115,6 +70,31 @@
 
 		Print &out;
 		OStreamParams params;
+	};
+	
+	template< typename derived >
+		struct OStreamManipulator{
+			void run(OStream &os) const { static_cast< const derived* >(this)->run(os); }
+	};		
+	
+	struct _bin : OStreamManipulator< _bin >{ void run(OStream &os) const { os.params.base = BIN; } };
+	struct _oct : OStreamManipulator< _oct >{ void run(OStream &os) const { os.params.base = OCT; } };
+	struct _dec : OStreamManipulator< _dec >{ void run(OStream &os) const { os.params.base = DEC; } };
+	struct _hex : OStreamManipulator< _hex >{ void run(OStream &os) const { os.params.base = HEX; } };
+	struct _endl : OStreamManipulator< _endl >{ void run(OStream &os) const { os.out.println(); } };
+	struct _ends : OStreamManipulator< _ends >{ void run(OStream &os) const { os.out.print('\0'); } };
+	
+	static const _bin bin;
+	static const _oct oct;
+	static const _dec dec;
+	static const _hex hex;	
+	static const _endl endl;
+	static const _ends ends;
+	
+	struct precision : OStreamManipulator< precision >{
+		CONSTEXPR precision( unsigned char in ) : val(in) {}
+		void run(OStream &os) const { os.params.precision = val; }
+		const unsigned char val;
 	};
 	
 	//Entry point for an OStream chain.
