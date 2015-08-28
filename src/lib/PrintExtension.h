@@ -21,6 +21,7 @@
 
 #include "Globals.h"
 #include "Arduino.h"
+#include "OStream.h"
 	
 #ifndef HEADER_PRINTEXTENSION
     #define HEADER_PRINTEXTENSION
@@ -33,7 +34,9 @@
 		typedef uint8_t pfct;
 	#endif
 
-    class PrintExtension : public Print{
+    class PrintExtension 
+		:	public Print,
+			public OStreamBase< PrintExtension >{
         public:
 		
 			/***
