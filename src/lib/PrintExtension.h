@@ -19,14 +19,11 @@
 	#define PRINTEX_LARGE_COUNTER
 ********************************************************************************/
 
+#include "Globals.h"
+#include "Arduino.h"
+	
 #ifndef HEADER_PRINTEXTENSION
     #define HEADER_PRINTEXTENSION
-
-    #include "Arduino.h"
-
-    #ifndef _INLINE_
-        #define _INLINE_  __attribute__( ( always_inline ) ) inline
-    #endif
 
     typedef size_t pft;
 
@@ -37,8 +34,13 @@
 	#endif
 
     class PrintExtension : public Print{
-
         public:
+		
+			/***
+				Streaming functionality.
+			***/
+			
+			//template< typename T > OStream operator<<( 
 
 			/***
 				Concat functionality.

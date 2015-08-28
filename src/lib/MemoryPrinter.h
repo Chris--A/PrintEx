@@ -8,13 +8,7 @@
 #ifndef HEADER_MEMORYPRINTER
     #define HEADER_MEMORYPRINTER
 
-	#if __cplusplus < 201103L || !defined(__GXX_EXPERIMENTAL_CXX0X__)
-		#define CONSTEXPR
-	#else
-		#define ISCPP11
-		#define CONSTEXPR constexpr
-	#endif
-
+	#include "Globals.h"
     #include "NonStreamingIO.h"
     #include "PrintExtension.h"
 
