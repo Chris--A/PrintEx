@@ -40,12 +40,6 @@
         public:
 		
 			/***
-				Streaming functionality.
-			***/
-			
-			//template< typename T > OStream operator<<( 
-
-			/***
 				Concat functionality.
 			***/
 
@@ -123,9 +117,10 @@
 
 
     struct PrintEx : PrintExtension{
-        PrintEx( Print& in ) : print(in)    { return; }
-        size_t write( uint8_t data )        { return print.write( data ); }
-        Print &print;
+		using PrintExtension::print;
+        PrintEx( Print& in ) : out(in)    { return; }
+        size_t write( uint8_t data )        { return out.write( data ); }
+        Print &out;
     };
 
     struct StreamEx : Stream, PrintExtension{
