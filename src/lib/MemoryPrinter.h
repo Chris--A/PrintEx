@@ -5,12 +5,11 @@
     Released under MIT licence.
 ********************************************************************************/
 
+#include "NonStreamingIO.h"
+#include "PrintExtension.h"
+	
 #ifndef HEADER_MEMORYPRINTER
     #define HEADER_MEMORYPRINTER
-
-	#include "Globals.h"
-    #include "NonStreamingIO.h"
-    #include "PrintExtension.h"
 
     /***************************************************************************
         EEPROMPrinter Class.

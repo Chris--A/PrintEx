@@ -19,7 +19,6 @@
 	#define PRINTEX_LARGE_COUNTER
 ********************************************************************************/
 
-#include "Globals.h"
 #include "Arduino.h"
 #include "OStream.h"
 	
@@ -36,7 +35,7 @@
 
     class PrintExtension 
 		:	public Print,
-			public OStreamBase< PrintExtension >{
+			public ios::OStreamBase< PrintExtension >{
         public:
 		
 			/***

@@ -5,10 +5,11 @@
     Released under MIT licence.
 ********************************************************************************/
 
+#include "Globals.h"
+#include "Arduino.h"
+
 #ifndef HEADER_NONSTREAMINGIO
     #define HEADER_NONSTREAMINGIO
-
-    #include "Arduino.h"
 
     /***************************************************************************
         NonStreamingIO Class.
