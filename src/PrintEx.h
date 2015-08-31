@@ -6,6 +6,7 @@
 ********************************************************************************/
 
 #include "lib/MemoryPrinter.h"
+#include "lib/StreamExtension.h"
 
 #include "tools/BufferedPrinter.h"
 #include "tools/DualPrinter.h"

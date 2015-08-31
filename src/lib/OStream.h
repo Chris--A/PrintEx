@@ -119,7 +119,7 @@
 			struct OStreamBase{
 				template< typename T >
 					OStream<derived> operator<< ( const T &data ){
-						OStream<derived> os( *static_cast<derived*>( this ) );
+						OStream<derived> os( CRTPO );
 						return os << data;
 				}
 		};

@@ -20,22 +20,26 @@
 		
 	/***********************************************************************************************
 		enable_if template.
-			If V is true, type is T, otherwise type is undefined.
+			Similar to select, however if V is false, then type is undefined.
 			
 			Warning: Arduino IDE versions below 1.5.7 do not have GCC 4.8.1 which includes
 			support for SFINAE. This template will not work in these IDE's.
+			However you can use it to generate errors in C++98 when conditions aren't met.
+			
+			C++11: T can be omitted and `void` will be used.
 	***********************************************************************************************/
 	
 	#ifdef ISCPP11
 		template< bool V, typename T = void > struct enable_if{};
 	#else
-		template< bool V, typename T > struct enable_if{};
+		template< bool V, typename T > struct enable_if{}; //C++98 must provide all template parameters.
 	#endif
 	template< typename T > struct enable_if< true, T >{ typedef T type; };	
 
 	/***********************************************************************************************
 		is_same structure.
-			This is the same as CompareType(), but allows using the value in constant expressions.
+			The template takes two types.
+			If T is the same type as U value is true, otherwise false.
 	***********************************************************************************************/
 		
 	template < typename T, typename U > struct is_same{ enum { value = false }; };
@@ -83,7 +87,7 @@
 	
 	/* *************************************************************************************
 		is_base_of structure.
-			Determines whether D is derived from B.
+			Determines whether D is inherited by B.
 	************************************************************************************* */
 	
 	template<class B, class D, typename C = void> struct is_base_of;

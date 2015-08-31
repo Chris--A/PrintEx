@@ -8,8 +8,8 @@
 //Uses CRTP macros.
 #include "Globals.h"
 
-#ifndef HEADER_CONCAT
-    #define HEADER_CONCAT
+#ifndef HEADER_PRINTCONCAT
+    #define HEADER_PRINTCONCAT
 	
 	template< typename derived >
 		struct PrintConcat{
@@ -33,5 +33,6 @@
             template< typename T >
                 _INLINE_ derived &concatln( const T &t, const int i )
                     { return CRTPO.println( t, i ), CRTPP; }
-		};
+	};
+	
 #endif

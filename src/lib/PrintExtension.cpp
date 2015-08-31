@@ -263,11 +263,3 @@
         return counter;
     }
 
-    /****************************************************************
-        _repeat function.
-            Prints character, repeating count times.
-            The public interface is 'repeat'.
-    ****************************************************************/
-
-    void PrintExtension::_repeat( const char &character, unsigned char count ) { while( count-- ) write( character ); }
-
