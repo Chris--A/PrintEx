@@ -29,6 +29,7 @@ NullStream	KEYWORD1
 concatln	KEYWORD2
 repeat	KEYWORD2
 repeatln	KEYWORD2
+printx	KEYWORD2
 
 # The keywords below appear to be highlighted already.
 # sprintf

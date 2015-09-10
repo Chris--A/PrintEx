@@ -1,10 +1,12 @@
-# `PrintEx` Library for Arduino ![Version 1.1.1](https://img.shields.io/badge/Version-1.1.1-blue.svg)
+# `PrintEx` Library for Arduino ![Version 1.1.1](https://img.shields.io/badge/Version-1.1.4-blue.svg)
 
 **Written by:** *Christopher Andrews*.  
 **Copyright:** _**2013**_*(`GString`)*-_**2015**_*(`PrintEx`)*, *Christopher Andrews, Released under MIT licence*.
 
+## About
+
 This library is the descendant of a library I wrote called `GString`.
-This library allows extending any `Stream` or `Print` derived library with feature rich printing and formatting capabilities. You can even create a library which provides the enhanced capabilities by default. Or alongside `Stream` for a bidirectional implementation.
+This library allows extending any `Stream` or `Print` derived library with feature rich printing and formatting capabilities. You can directly use streaming (in & out), `printf`, chainable interfaces and repitition. You can even create a library which provides the enhanced capabilities by default. Or alongside `Stream` for a bidirectional implementation.
 
 The `printf` implementation found in this library is unique. It has been built directly on top of the Arduino `Print` library rather than as a separate code base simply called from within. All the features found in `printf` use a feature already implemented in `Print`. This means floating point support is actually using `Print::print( float );`. It also contains additional functionality like support for _EEPROM_/_PROGMEM_ data, repetition and chaining calls.
 
@@ -23,8 +25,9 @@ A sample of Arduino libraries which can be extended are as follows:
 ## Contents:
 - [Basic Usage.](#basic-usage).
   - [Enhancing any `Stream` or `Print` based object](#1-enhancing-any-stream-or-print-based-object).
-  - [Using chainable functions](#2-using-chainable-functions).
-  - [`printf` formatting](#3-printf-formatting).
+  - [Streaming data (in/out)](#2-streaming-data-inout)
+  - [Using chainable functions](#3-using-chainable-functions).
+  - [`printf` formatting](#4-printf-formatting).
 - [Helpers & Tools](#helpers--tools). 
 - [Core Interfaces](#core-interfaces).
 - [Custom Configuration](#custom-configuration).
@@ -62,8 +65,61 @@ void setup(){
 
 void loop() {}
 ```
-  
-#### 2. Using chainable functions.
+
+#### 2. Streaming (in/out).
+
+Streaming functionality is built into the PrintEx library, however you do not need to extend your object to use it (this will be done automatically). You can use any `Print` or `Stream` based object directly. Of course, a `Print` library does not have read capabilities and can only stream out data.
+
+The benefit of streaming is, the code produced is smaller than the equivalent written using multiple `print()`/`println()` statements.
+
+```Arduino
+#include <PrintEx.h>
+
+using namespace ios;
+
+void setup(){
+
+  Serial.begin( 9600 );
+
+  //Stream out formatted data.
+  Serial << "A hexidecimal number: " << hex << 43981 << endl;
+
+  //Read two objects from Serial.
+  int a;
+  float f;
+  Serial >> a >> f;
+}
+
+void loop(){}
+```
+
+Built in manipulators are listed below. If you do not include the namespace `ios` you will need to prefix these manipulators accordingly: `ios::hex`.
+
+Manipulator  | Description
+------------- | -------------
+**`bin`** | Sets an output stream to print integers in binary.
+**`oct`** | Sets an output stream to print integers in octal format.
+**`dec`** | Sets an output stream to print integers in base 10.
+**`hex`** | Sets an output stream to print integers in hexidecimal base.
+**`precision`** | Takes a single parameter: Sets the output stream to print floating point data with a certain precision (decimal places).
+**`endl`** | Prints a new line.
+**`repeat`** | Accepts two parameters: the item to print, and how many times to repeat. The item can be a character or string.
+
+Stream buffers can be used to read data directly, for instance, you can stream a string directly into EEPROM:
+
+```Arduino
+EString e( 0, 10 );  //Create a buffer starting at EEPROM cell 0, with 10 bytes length.
+Serial >> e;
+  ```
+
+An alternative method for streaming data out uses the function `printx` (only available from extended interfaces). It uses the same manipulators above:
+
+```Arduino
+PrintEx printer = Serial;
+printer.printx( "A hexidecimal number: ", hex, 4398, endl );
+```
+
+#### 3. Using chainable functions.
 
 Every interface using this library incorporates an additional set of functions specifically designed for creating a chain like syntax. For example a series of `print()`/`println()` calls can be replaced with a chain.
 
@@ -112,7 +168,7 @@ void setup(){
 void loop() {}
 ```
 
-#### 3. `printf` formatting.
+#### 4. `printf` formatting.
 
 This library has a custom `printf` method for use with all interfaces found in this library. It is not as complete as a standard implementation, however it does support some custom features specific to Arduino. It does not support the precision parameter yet, however it is planned for a future version.
 
