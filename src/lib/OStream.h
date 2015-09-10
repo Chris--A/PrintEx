@@ -96,7 +96,7 @@
 					This substitution accepts:
 					- Printable derived objects.
 					- PROGMEM strings implemented using F() macros.
-					- c-strings (pointers and arrays).
+					- c-strings (pointers and arrays), String objects.
 				***/
 				template< 
 					typename T,
