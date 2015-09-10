@@ -1,6 +1,13 @@
 /********************************************************************************
         Copyright 2015 Christopher Andrews.
         https://github.com/Chris--A/PrintEx
+		
+		This code mimics part of the C++11 STL library which provides
+		meta-programming decision making. This is a minimal implementation
+		and does not consider newer types such as nullptr_t and char32_t,
+		which would be uncommon in basic Arduino applications.
+		
+		Add an issue to the tracker listed above to request these features.
 
         Released under MIT licence.
 ********************************************************************************/

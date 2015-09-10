@@ -18,7 +18,8 @@
 		PrintConcat<StreamExtension>,
 		PrintRepeat<StreamExtension>,
 		ios::OStreamBase<StreamExtension>,
-		ios::IStreamBase<StreamExtension>
+		ios::IStreamBase<StreamExtension>,
+		PrintVariadic<PrintExtension>
 	{
 		pft printf( const char *format, ... );
 	};

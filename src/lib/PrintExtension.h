@@ -22,6 +22,7 @@
 #include "Arduino.h"
 #include "PrintConcat.h"
 #include "PrintRepeat.h"
+#include "PrintVariadic.h"
 #include "OStream.h"
 	
 #ifndef HEADER_PRINTEXTENSION
@@ -39,7 +40,8 @@
 		:	public Print,
 			public PrintConcat<PrintExtension>,
 			public PrintRepeat<PrintExtension>,
-			public ios::OStreamBase<PrintExtension>{
+			public ios::OStreamBase<PrintExtension>,
+			public PrintVariadic<PrintExtension>{
         public:
 
             pft printf( const char *format, ... );
