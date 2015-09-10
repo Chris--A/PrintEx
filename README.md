@@ -25,7 +25,7 @@ A sample of Arduino libraries which can be extended are as follows:
 ## Contents:
 - [Basic Usage.](#basic-usage).
   - [Enhancing any `Stream` or `Print` based object](#1-enhancing-any-stream-or-print-based-object).
-  - [Streaming data (in/out)](#2-streaming-data-inout)
+  - [Streaming data (in/out)](#2-streaming-inout)
   - [Using chainable functions](#3-using-chainable-functions).
   - [`printf` formatting](#4-printf-formatting).
 - [Helpers & Tools](#helpers--tools). 
