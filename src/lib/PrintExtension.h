@@ -10,6 +10,7 @@
     Define these constants below to disable certain features.
 
     #define PRINTEX_NO_WIDTH_PARAM
+    #define PRINTEX_NO_PRECISION_PARAM
     #define PRINTEX_NO_PROGMEM
     #define PRINTEX_NO_EEPROM
     #define PRINTEX_NO_FLOATING_POINT

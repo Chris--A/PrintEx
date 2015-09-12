@@ -1,4 +1,4 @@
-# `PrintEx` Library for Arduino ![Version 1.1.1](https://img.shields.io/badge/Version-1.1.4-blue.svg)
+# `PrintEx` Library for Arduino ![Version 1.1.5](https://img.shields.io/badge/Version-1.1.5-blue.svg)
 
 **Written by:** *Christopher Andrews*.  
 **Copyright:** _**2013**_*(`GString`)*-_**2015**_*(`PrintEx`)*, *Christopher Andrews, Released under MIT licence*.
@@ -25,7 +25,7 @@ A sample of Arduino libraries which can be extended are as follows:
 ## Contents:
 - [Basic Usage.](#basic-usage).
   - [Enhancing any `Stream` or `Print` based object](#1-enhancing-any-stream-or-print-based-object).
-  - [Streaming data (in/out)](#2-streaming-inout)
+  - [Streaming data (in/out)](#2-streaming-inout).
   - [Using chainable functions](#3-using-chainable-functions).
   - [`printf` formatting](#4-printf-formatting).
 - [Helpers & Tools](#helpers--tools). 
@@ -36,6 +36,8 @@ A sample of Arduino libraries which can be extended are as follows:
 ## Basic Usage
 #### 1. Enhancing any `Stream` or `Print` based object.
 To extend an already existing object like `Serial`, or `EthernetClient` you'll need to make use of either `StreamEx` or `PrintEx`. 
+
+**Note:** This section does not apply to streaming functionality, it is available by default (see the [next section](#2-streaming-inout) for more info).
 
 - `StreamEx`  
 This extends the `Print` interface while maintaining the ability to read. All existing `Print` and `Stream` functions are available for use. To use this class simply create a variable of type `StreamEx` and initialize it with your `Stream` based object.
@@ -173,7 +175,7 @@ void loop() {}
 This library has a custom `printf` method for use with all interfaces found in this library. It is not as complete as a standard implementation, however it does support some custom features specific to Arduino. It does not support the precision parameter yet, however it is planned for a future version.
 
 Formatting options use the following syntax:  
-`%[flags][width][length]specifier`
+`%[flags][width][.precision][length]specifier`
 
 Each element and their set of options is described in the tables below.  
 
@@ -201,8 +203,13 @@ Each element and their set of options is described in the tables below.
   **`r`** | The number of characters to read from the EEPROM.
   **`n`** | Number of times to run repeat function.
   
-- **Length**  
-  This only has one value: `l`. If this value is present the behaviour of certain specifiers is changed.
+- **Precision**
+
+  To use this option the precision value must be preceeded by a period ('.'). This option only affects floating point data. Its value is the number of decimal places to use. For additional precision support (non floating point data), please open an issue to request this feature.
+
+- **Length**
+
+  This only has one value: `l` (not the number one, but the alphabetical letter 'l'). If this value is present the behaviour of certain specifiers is changed.
 
   Specifier  | Description
   ------------- | -------------
@@ -268,15 +275,16 @@ Type  | Description
 **`GString`**  | This object provides printing and formatting capabilities for blocks of memory (SRAM). The object can be passed to other Print functions.
 **`EString`**  | This is the EEPROM equivalent of `GString`. This essentially allows formatted printing of strings to the EEPROM. It also allows other `Print` based classes to print EEPROM data easily.
 **`PString`**  | This is a PROGMEM read-only version of `GString`. It allows printing of flash based strings.
-**`PrintExtension`**  | This is a core interface for `PrintEx`. It provides the formatting features such as `concat()` and `printf()`.
+**`PrintExtension`**  | This is a core interface for `PrintEx`. It provides the formatting features such as `concat()` and `printf()`. It also includes `OStream` which provides streaming capabilites (output only).
+**`StreamExtension`**  | This core library encapsulates the functionality found in the `PrintExtension` interface, however it also provides an `IStream` interface allowing streaming into arbitrary elements.
 **`NonStreamingIO`**  | This interface provides an extension to the `Print` class. It allows IO capabilities for derived objects that may not be streams. As in, the data printed to the object is still available for use.
 ---
 
 ## Custom Configuration.
 For normal use this section is not necessary. However the library can be tweaked if needed.
 
-The available customizations can be used by defining one or a combination of the options listed below. They can be defined either in the *PrintExtension.h* file, or passed as a compiler option using `-D`. Unfortunately defining these in your sketch will not have any effect.
-### GLobal library flags.
+The available customizations can be used by defining one, or a combination of the options listed below. They can be defined either in the *PrintExtension.h* file, or passed as a compiler option using `-D`. Unfortunately defining these in your sketch will not have any effect.
+### Global library flags.
 These settings affect all library functions that use the features described.
 
 Define  | Action if defined
@@ -290,6 +298,7 @@ These settings only affect the `printf` implementation. To avoid inclusion outsi
 Define  | Action if defined
 ------------- | -------------
 **`PRINTEX_NO_WIDTH_PARAM`**  | The width parameter must be specified inline and cannot be set to `*` specifying an additional input for the width.
+**`PRINTEX_NO_PRECISION_PARAM`** | Do not use precision handling (currently only affects floating point resolution).
 **`PRINTEX_NO_PROGMEM`**  | Do not include PROGMEM functionality (`%p`).
 **`PRINTEX_NO_EEPROM`**  | Do not include EEPROM functionality (`%r`).
 **`PRINTEX_NO_FLOATING_POINT`**  | Do not include support for floating point data (`%f`).

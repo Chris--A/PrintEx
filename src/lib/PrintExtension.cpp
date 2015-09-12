@@ -15,6 +15,7 @@
     #define CHAR_SPACE         ' '
     #define CHAR_STAR          '*'
     #define CHAR_HASH          '#'
+    #define CHAR_PERIOD        '.'
 
     #define CHAR_s             's'
     #define CHAR_d             'd'
@@ -93,7 +94,7 @@
             Prints formatted text.
 
             Formatting options use the following syntax:
-                %[flags][width][length]specifier
+                %[flags][width][.precision][length]specifier
 
             Flags:
                 -:    Left-justify within the given field width; Right justification is the default.
@@ -116,11 +117,19 @@
 
                     n:  Number of times to run repeat function.
 
+			Precision:
+			
+				.(number): If a precision value is needed, it must be prefixed by a period character ('.').
+				           This parameter only affects the precision of floating point values. ('f' specifier).
+				
             Length:
+			
                 l:  d, i use long instead of int.
                     u, x use unsigned long instead of unsigned int.
                     n    repeats a string.
+					
             Specifier:
+			
                 s:    String ( null terminated ).
                 p:    PROGMEM string. No formatting takes place, the string is printed directly.
                 r:    EEPROM string. No formatting takes place, the string is printed directly.
@@ -145,7 +154,14 @@
     #ifndef ISCPP11
         bool formatTest( const char *&format, const char test ) __attribute__((always_inline));
     #endif
-    CONSTEXPR bool formatTest( const char *&format, const char test ) { return *format == test ? ++format, true : false; }
+    CONSTEXPR bool formatTest( const char *&format, const char test ){
+		return *format == test ? ++format, true : false;
+	}
+    
+    //Used to parse the width and precision parameters.
+    void parseValue( const char *&format, unsigned int &total ){ 
+		for ( ; *format >= CHAR_ZERO && *format <= CHAR_NINE; ++format )(total *= 10) += *format - CHAR_ZERO; 
+	}
 
 
     pft PrintExtension::_printf( const char *format, const va_list &vList ){
@@ -175,11 +191,18 @@
                         else //Width provided in format specifier (drop to for loop below).
                     #endif
 
-                    //Calculate padding width.
-                    for ( ; *format >= CHAR_ZERO && *format <= CHAR_NINE; ++format )(width *= 10) += *format - CHAR_ZERO;
+                    //Calculate padding width (if not provided as an extra parameter).
+                    parseValue( format, width );
 
+                    //Determine pad character and give the working buffer a printable interface.
                     char    padChar = ( pad & PAD_ZERO ) ? CHAR_ZERO : CHAR_SPACE;
                     GString convertStr( buffer );
+                    
+                    //Grab precision specifier.
+                    #if !defined(PRINTF_NO_FLOATING_POINT) && !defined(PRINTEX_NO_PRECISION_PARAM)
+                        unsigned int precision = 0x00;
+                        if( formatTest( format, CHAR_PERIOD ) ) parseValue( format, precision );
+                    #endif
 
                     //Get length flag if for larger types.
                     if( formatTest( format, CHAR_l ) ) largeType = true;
@@ -221,7 +244,11 @@
 
                     #ifndef PRINTF_NO_FLOATING_POINT
                         }else if( *format == CHAR_f ){                                            //Floating point data.
-                            convertStr.print( va_arg( vList, double ) );
+                            #ifndef PRINTEX_NO_PRECISION_PARAM
+                                convertStr.print( va_arg( vList, double ), precision );
+                            #else
+                                convertStr.print( va_arg( vList, double ) );
+                            #endif
                     #endif
 
                     }else if( *format == CHAR_x ){                                                //Unsigned hexidecimal integer.
