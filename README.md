@@ -172,7 +172,7 @@ void loop() {}
 
 #### 4. `printf` formatting.
 
-This library has a custom `printf` method for use with all interfaces found in this library. It is not as complete as a standard implementation, however it does support some custom features specific to Arduino. It does not support the precision parameter yet, however it is planned for a future version.
+This library has a custom `printf` method for use with all interfaces found in this library. It is not as complete as a standard implementation, however it does support some custom features specific to Arduino. Basic support for the precision parameter is available, however it only affects floating point data. To request further implementation, please open an issue [here](https://github.com/Chris--A/PrintEx/issues).
 
 Formatting options use the following syntax:  
 `%[flags][width][.precision][length]specifier`
@@ -304,5 +304,3 @@ Define  | Action if defined
 **`PRINTEX_NO_FLOATING_POINT`**  | Do not include support for floating point data (`%f`).
 **`PRINTEX_NO_REPEAT`**  | Do not include character repeat functionality (`%n`).
 **`PRINTEX_NO_ERROR_CONDITION`**  | Do not include error handling (`Error` is printed on bad inputs/failed operation).
-
-
