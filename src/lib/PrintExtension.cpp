@@ -117,19 +117,19 @@
 
                     n:  Number of times to run repeat function.
 
-			Precision:
-			
-				.(number): If a precision value is needed, it must be prefixed by a period character ('.').
-				           This parameter only affects the precision of floating point values. ('f' specifier).
-				
+            Precision:
+
+                .(number): If a precision value is needed, it must be prefixed by a period character ('.').
+                           This parameter only affects the precision of floating point values. ('f' specifier).
+
             Length:
-			
+
                 l:  d, i use long instead of int.
                     u, x use unsigned long instead of unsigned int.
                     n    repeats a string.
-					
+
             Specifier:
-			
+
                 s:    String ( null terminated ).
                 p:    PROGMEM string. No formatting takes place, the string is printed directly.
                 r:    EEPROM string. No formatting takes place, the string is printed directly.
@@ -155,13 +155,13 @@
         bool formatTest( const char *&format, const char test ) __attribute__((always_inline));
     #endif
     CONSTEXPR bool formatTest( const char *&format, const char test ){
-		return *format == test ? ++format, true : false;
-	}
-    
+        return *format == test ? ++format, true : false;
+    }
+
     //Used to parse the width and precision parameters.
-    void parseValue( const char *&format, unsigned int &total ){ 
-		for ( ; *format >= CHAR_ZERO && *format <= CHAR_NINE; ++format )(total *= 10) += *format - CHAR_ZERO; 
-	}
+    void parseValue( const char *&format, unsigned int &total ){
+        for ( ; *format >= CHAR_ZERO && *format <= CHAR_NINE; ++format )(total *= 10) += *format - CHAR_ZERO;
+    }
 
 
     pft PrintExtension::_printf( const char *format, const va_list &vList ){
@@ -197,7 +197,7 @@
                     //Determine pad character and give the working buffer a printable interface.
                     char    padChar = ( pad & PAD_ZERO ) ? CHAR_ZERO : CHAR_SPACE;
                     GString convertStr( buffer );
-                    
+
                     //Grab precision specifier.
                     #if !defined(PRINTF_NO_FLOATING_POINT) && !defined(PRINTEX_NO_PRECISION_PARAM)
                         unsigned int precision = 0x00;

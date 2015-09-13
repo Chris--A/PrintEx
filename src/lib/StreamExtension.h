@@ -12,18 +12,18 @@
 
 #ifndef HEADER_STREAMEXTENSION
     #define HEADER_STREAMEXTENSION
-	
-	struct StreamExtension : 
-		Stream,
-		PrintConcat<StreamExtension>,
-		PrintRepeat<StreamExtension>,
-		ios::OStreamBase<StreamExtension>,
-		ios::IStreamBase<StreamExtension>,
-		PrintVariadic<PrintExtension>
-	{
-		pft printf( const char *format, ... );
-	};
-	
+
+    struct StreamExtension :
+        Stream,
+        PrintConcat<StreamExtension>,
+        PrintRepeat<StreamExtension>,
+        ios::OStreamBase<StreamExtension>,
+        ios::IStreamBase<StreamExtension>,
+        PrintVariadic<PrintExtension>
+    {
+        pft printf( const char *format, ... );
+    };
+
     struct StreamEx : StreamExtension{
 
         StreamEx( Stream &in ) : stream(in) {}
@@ -33,6 +33,6 @@
         int read( void )                    { return stream.read(); }
         size_t write( uint8_t data )        { return stream.write(data); }
         Stream &stream;
-    };	
-	
+    };
+
 #endif

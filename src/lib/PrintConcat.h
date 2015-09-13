@@ -10,10 +10,10 @@
 
 #ifndef HEADER_PRINTCONCAT
     #define HEADER_PRINTCONCAT
-	
-	template< typename derived >
-		struct PrintConcat{
-		
+
+    template< typename derived >
+        struct PrintConcat{
+
             template< typename T >
                 _INLINE_ derived &operator +=( const T &t )
                     { return CRTPO.concat( t ); }
@@ -33,6 +33,6 @@
             template< typename T >
                 _INLINE_ derived &concatln( const T &t, const int i )
                     { return CRTPO.println( t, i ), CRTPP; }
-	};
-	
+    };
+
 #endif

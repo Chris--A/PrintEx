@@ -44,7 +44,7 @@
 
             uint8_t *start;
             uint16_t len;
-			
+
         protected:
             CONSTEXPR NonStreamingIO( uint8_t *data ) : start( data ) , len( 0 )                                 {}
             CONSTEXPR NonStreamingIO( uint8_t *data, const unsigned int length ) : start( data ) , len( length ) {}
