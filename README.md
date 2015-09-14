@@ -1,4 +1,4 @@
-# `PrintEx` Library for Arduino ![Version 1.1.5](https://img.shields.io/badge/Version-1.1.5-blue.svg)
+# `PrintEx` Library for Arduino ![Version 1.1.6](https://img.shields.io/badge/Version-1.1.6-blue.svg)
 
 **Written by:** *Christopher Andrews*.  
 **Copyright:** _**2013**_*(`GString`)*-_**2015**_*(`PrintEx`)*, *Christopher Andrews, Released under MIT licence*.
@@ -25,7 +25,7 @@ A sample of Arduino libraries which can be extended are as follows:
 ## Contents:
 - [Basic Usage.](#basic-usage).
   - [Enhancing any `Stream` or `Print` based object](#1-enhancing-any-stream-or-print-based-object).
-  - [Streaming data (in/out)](#2-streaming-inout).
+  - [Streaming data (in/out)](#2-streaming-inout). ![C++11 Only!](https://img.shields.io/badge/Requires-C++11-orange.svg)
   - [Using chainable functions](#3-using-chainable-functions).
   - [`printf` formatting](#4-printf-formatting).
 - [Helpers & Tools](#helpers--tools). 
@@ -69,6 +69,8 @@ void loop() {}
 ```
 
 #### 2. Streaming (in/out).
+
+##### NOTE: Streaming is a C++11 only feature, you can enable it manually or wait for the IDE version 1.6.6 where is has been enabled by default.  
 
 Streaming functionality is built into the PrintEx library, however you do not need to extend your object to use it (this will be done automatically). You can use any `Print` or `Stream` based object directly. Of course, a `Print` library does not have read capabilities and can only stream out data.
 
@@ -114,7 +116,7 @@ EString e( 0, 10 );  //Create a buffer starting at EEPROM cell 0, with 10 bytes 
 Serial >> e;
   ```
 
-An alternative method for streaming data out uses the function `printx` (only available from extended interfaces). It uses the same manipulators above:
+An alternative method for streaming data out uses the function `printx` (only available from extended interfaces ![C++11 Only!](https://img.shields.io/badge/Requires-C++11-orange.svg)). It uses the same manipulators above:
 
 ```Arduino
 PrintEx printer = Serial;
@@ -304,3 +306,5 @@ Define  | Action if defined
 **`PRINTEX_NO_FLOATING_POINT`**  | Do not include support for floating point data (`%f`).
 **`PRINTEX_NO_REPEAT`**  | Do not include character repeat functionality (`%n`).
 **`PRINTEX_NO_ERROR_CONDITION`**  | Do not include error handling (`Error` is printed on bad inputs/failed operation).
+
+
