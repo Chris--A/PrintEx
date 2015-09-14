@@ -57,6 +57,7 @@
 
                 derived &input;
         };
+
         //Entry point for an IStream chain.
         template< typename derived >
             struct IStreamBase{

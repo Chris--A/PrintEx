@@ -188,7 +188,7 @@
                     //Check for passed length.
                     #ifndef PRINTF_NO_WIDTH_PARAM
                         if( formatTest( format, CHAR_STAR ) ) width = ( unsigned int ) GetParam_int( vList );
-                        else //Width provided in format specifier (drop to for loop below).
+                        else //Width provided in format specifier (drop to parseValue below).
                     #endif
 
                     //Calculate padding width (if not provided as an extra parameter).

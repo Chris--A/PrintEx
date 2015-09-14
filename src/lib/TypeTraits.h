@@ -97,28 +97,30 @@
             Determines whether D is inherited by B.
     ************************************************************************************* */
 
-    template<class B, class D, typename C = void> struct is_base_of;
+    
+    #ifdef ISCPP11
+        template<class B, class D, typename C = void> struct is_base_of;
 
-    template<class B, class D>
-        struct is_base_of<B,D,typename enable_if<
-            !is_array<D>::value &&
-            !is_fundamental<D>::value &&
-            !is_pointer<D>::value>::type
-        >{
-          template< typename T > struct dummy{};
-          struct Child : D, dummy<int> {};
-          static B* Check (B*);
-          template< typename T > static char Check (dummy<T>*);
-          static const bool value = (sizeof(Check((Child*)0)) == sizeof(B*));
-    };
+        template<class B, class D>
+            struct is_base_of<B,D,typename enable_if<
+                !is_array<D>::value &&
+                !is_fundamental<D>::value &&
+                !is_pointer<D>::value>::type
+            >{
+              template< typename T > struct dummy{};
+              struct Child : D, dummy<int> {};
+              static B* Check (B*);
+              template< typename T > static char Check (dummy<T>*);
+              static const bool value = (sizeof(Check((Child*)0)) == sizeof(B*));
+        };
 
-    template<class B, class D>
-        struct is_base_of<B,D,typename enable_if<
-            is_array<D>::value ||
-            is_fundamental<D>::value ||
-            is_pointer<D>::value>::type
-        >{
-        static const bool value = 0;
-    };
-
+        template<class B, class D>
+            struct is_base_of<B,D,typename enable_if<
+                is_array<D>::value ||
+                is_fundamental<D>::value ||
+                is_pointer<D>::value>::type
+            >{
+            static const bool value = 0;
+        };
+    #endif
 #endif

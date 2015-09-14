@@ -10,16 +10,21 @@
 
 #ifndef HEADER_PRINTVARIADIC
     #define HEADER_PRINTVARIADIC
-	
-	template< typename derived >
-		struct PrintVariadic{
-		
-			derived &printx( void ){ return CRTPO; }
-		
-			template< typename T, typename... U >
-				derived &printx( const T& t, const U&... u ){
-					CRTPO << t;
-					return printx( u... );
-				}
-	};
+
+    #ifdef ISCPP11
+
+        template< typename derived >
+            struct PrintVariadic{
+
+                derived &printx( void ){ return CRTPO; }
+
+                template< typename T, typename... U >
+                    derived &printx( const T& t, const U&... u ){
+                        CRTPO << t;
+                        return printx( u... );
+                    }
+        };
+    #else
+        template< typename derived > struct PrintVariadic{};
+    #endif
 #endif

@@ -123,6 +123,7 @@
                         return os << data;
                 }
         };
+		#endif
     }; //namespace ios
-    #endif
+
 #endif
