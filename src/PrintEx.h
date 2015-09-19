@@ -17,28 +17,29 @@
 #include "tools/NullStream.h"
 
 #ifdef ISCPP11
-	template<
-		typename D,
-		typename T,
-		typename = typename enable_if<is_base_of<Print,D>::value>::type,
-		typename = typename enable_if<!is_base_of<PrintExtension,D>::value>::type,
-		typename = typename enable_if<!is_base_of<StreamExtension,D>::value>::type
-	>
-		ios::OStream<PrintExtension> operator<< ( D &print, const T &data ){
-			PrintEx printer = print;
-			ios::OStream<PrintExtension> os( printer );
-			return os << data;
-	}
+    template<
+        typename D,
+        typename T,
+        typename = typename enable_if<is_base_of<Print,D>::value>::type,
+        typename = typename enable_if<!is_base_of<PrintExtension,D>::value>::type,
+        typename = typename enable_if<!is_base_of<StreamExtension,D>::value>::type
+    >
+        ios::OStream<PrintExtension> operator<< ( D &print, const T &data ){
+            PrintEx printer = print;
+            ios::OStream<PrintExtension> os( printer );
+            return os << data;
+    }
 
-	template<
-		typename D,
-		typename T,
-		typename = typename enable_if<is_base_of<Stream,D>::value>::type,
-		typename = typename enable_if<!is_base_of<StreamExtension,D>::value>::type
-	>
-		ios::IStream<StreamExtension> operator>> ( D &stream, T &data ){
-			StreamEx streamer = stream;
-			ios::IStream<StreamExtension> os( streamer );
-			return os >> data;
-	}
+    template<
+        typename D,
+        typename T,
+        typename = typename enable_if<is_base_of<Stream,D>::value>::type,
+        typename = typename enable_if<!is_base_of<StreamExtension,D>::value>::type
+    >
+        ios::IStream<StreamExtension> operator>> ( D &stream, T &data ){
+            StreamEx streamer = stream;
+            ios::IStream<StreamExtension> os( streamer );
+            return os >> data;
+    }
+
 #endif

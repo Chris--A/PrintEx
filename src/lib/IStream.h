@@ -8,7 +8,7 @@
 // Requires:
 // Globals.h
 // TypeTraits.h
-#include "NonStreamingIO.h"
+#include "MemoryPrinter.h"
 
 #ifndef HEADER_ISTREAM
     #define HEADER_ISTREAM
@@ -43,7 +43,10 @@
 
                 //Direct buffer reading, will stop on timeout.
                 //NonStreamingIO::len is modified to reflect the number of characters read.
-                template< typename T >
+                template<
+                    typename T,
+                    typename = typename enable_if< !is_same<T,GString>::value >::type
+                >
                     typename enable_if<is_base_of<NonStreamingIO,T>::value, IStream>::type operator>> ( T &t ){
                         int len = t.len;
                         t.len = 0;
@@ -52,6 +55,12 @@
                             if( !input.readBytes(&readBuff, 1) ) break;
                             t.write(readBuff);
                         }
+                        return *this;
+                }
+
+                //GString (SRAM) specific buffer handling.
+                _INLINE_ IStream operator>> ( GString &g ){
+                        input.readBytes(g.start, g.len);
                         return *this;
                 }
 
