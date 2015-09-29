@@ -16,7 +16,7 @@ size_t URIEncoder::write( uint8_t data ){
 	bool found = false;
 	
 	if( mode != URI_ALL ){
-		for( char index = 0 ; index < sizeof(URIChars) ; ++index ){
+		for( unsigned char index = 0 ; index < sizeof(URIChars) ; ++index ){
 			if( pgm_read_byte( URIChars + index ) == data ) found = true;
 		}
 	}else

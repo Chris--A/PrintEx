@@ -5,6 +5,8 @@
     Released under MIT licence.
 ********************************************************************************/
 
+#define PRINTEX_VERSION		10107
+
 #include "lib/MemoryPrinter.h"
 #include "lib/StreamExtension.h"
 

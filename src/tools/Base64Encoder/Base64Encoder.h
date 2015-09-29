@@ -29,7 +29,7 @@
 
             uint8_t data[ 0x04 ];
             Print &out;
-            char cursor;
+            unsigned char cursor;
     };
 
 #endif

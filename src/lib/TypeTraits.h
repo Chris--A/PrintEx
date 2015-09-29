@@ -17,6 +17,8 @@
 #ifndef HEADER_TYPETRAITS
     #define HEADER_TYPETRAITS
 
+    struct NullType{};
+
     /***********************************************************************************************
         select template.
             If V is true, type is T, otherwise U.
@@ -57,7 +59,7 @@
             'value' will be set to true if t is a integer type ( 8 to 64 bit, signed / unsigned ).
             This is the compile time constant version of IsIntType().
     ***********************************************************************************************/
-
+/*
     template< typename T >
         struct is_integer{
             enum{
@@ -65,6 +67,17 @@
                 V16   = is_same< T, uint16_t >::value || is_same< T, int16_t >::value,
                 V32   = is_same< T, uint32_t >::value || is_same< T, int32_t >::value,
                 V64   = is_same< T, uint64_t >::value || is_same< T, int64_t >::value,
+                value = V8 || V16 || V32 || V64
+            };
+    };*/
+
+    template< typename T >
+        struct is_integer{
+            enum{
+                V8    = is_same< T, unsigned char >::value  || is_same< T, signed char >::value,
+                V16   = is_same< T, unsigned int >::value || is_same< T, signed int >::value,
+                V32   = is_same< T, unsigned long >::value || is_same< T, signed long >::value,
+                V64   = is_same< T, unsigned long long >::value || is_same< T, signed long long >::value,
                 value = V8 || V16 || V32 || V64
             };
     };
@@ -91,13 +104,121 @@
     template< typename T, size_t A, size_t N > struct is_array< T[A][N] > { enum { value = true }; };
     template< typename T, size_t B, size_t A, size_t N > struct is_array< T[B][A][N] > { enum { value = true }; };
 
+    /* *************************************************************************************
+        ArrayInfo structure.
+            A useful way to disambiguate multi dimension array's.
+            Also T *t, and T(&t)[N] situations can be solved using IsAnArray value.
+    ************************************************************************************* */
+
+    template< typename T >                             /*--- 'Not an array' specialisation. ---*/
+        struct ArrayInfo{
+            enum{
+                IsAnArray = false,
+                First = 0x00,
+                Dimensions = 0x00,
+            };
+
+            typedef T            ThisType;
+            typedef NullType    NextType;
+            typedef ThisType    UnderlyingType;
+    };
+
+    template< typename T, size_t N >
+        struct ArrayInfo< T[N] >{                     /*--- Single dimension specialisation. ---*/
+            enum{
+                IsAnArray = true,
+                First = N,
+                Dimensions = 0x01,
+            };
+            static const size_t Indicies[ Dimensions ];
+            typedef T ThisType[N];
+            typedef T NextType;
+            typedef T UnderlyingType;
+    };
+
+    template< typename T, size_t A, size_t N >
+        struct ArrayInfo< T[A][N] >{                /*--- Two dimensional array specialisation. ---*/
+            enum{
+                IsAnArray = true,
+                First = A,
+                Second = N,
+                Dimensions = 0x02,
+            };
+            static const size_t Indicies[ Dimensions ];
+            typedef T ThisType[A][N];
+            typedef T NextType[N];
+            typedef T UnderlyingType;
+    };
+
+    template< typename T, size_t B, size_t A, size_t N >
+        struct ArrayInfo< T[B][A][N] >{             /*--- Three dimensional array specialisation. ---*/
+            enum{
+                IsAnArray = true,
+                First = B,
+                Second = A,
+                Third = N,
+                Dimensions = 0x03,
+            };
+            static const size_t Indicies[ Dimensions ];
+            typedef T ThisType[B][A][N];
+            typedef T NextType[A][N];
+            typedef T UnderlyingType;
+    };
+
+    template< typename T, size_t C, size_t B, size_t A, size_t N >
+        struct ArrayInfo< T[C][B][A][N] >{            /*--- Four dimensional array specialisation. ---*/
+            enum{
+                IsAnArray = true,
+                First = C,
+                Second = B,
+                Third = A,
+                Fourth = N,
+                Dimensions = 0x04,
+            };
+            static const size_t Indicies[ Dimensions ];
+            typedef T ThisType[C][B][A][N];
+            typedef T NextType[B][A][N];
+            typedef T UnderlyingType;
+    };
+    /*
+    template< typename T >
+        const size_t ArrayInfo< T >::Indicies[ ArrayInfo< T >::Dimensions ] = {
+            ArrayInfo< T >::First
+    };*/
+
+    template< typename T, size_t N >
+        const size_t ArrayInfo< T[N] >::Indicies[ ArrayInfo< T[N] >::Dimensions ] = {
+            ArrayInfo< T[N] >::First
+    };
+
+    template< typename T, size_t A, size_t N >
+        const size_t ArrayInfo< T[A][N] >::Indicies[ ArrayInfo< T[A][N] >::Dimensions ] = {
+            ArrayInfo< T[A][N] >::First,
+            ArrayInfo< T[A][N] >::Second
+    };
+
+    template< typename T, size_t B, size_t A, size_t N >
+        const size_t ArrayInfo< T[B][A][N] >::Indicies[ ArrayInfo< T[B][A][N] >::Dimensions ] = {
+            ArrayInfo< T[B][A][N] >::First,
+            ArrayInfo< T[B][A][N] >::Second,
+            ArrayInfo< T[B][A][N] >::Third
+    };
+
+    template< typename T, size_t C, size_t B, size_t A, size_t N >
+        const size_t ArrayInfo< T[C][B][A][N] >::Indicies[ ArrayInfo< T[C][B][A][N] >::Dimensions ] = {
+            ArrayInfo< T[C][B][A][N] >::First,
+            ArrayInfo< T[C][B][A][N] >::Second,
+            ArrayInfo< T[C][B][A][N] >::Third,
+            ArrayInfo< T[C][B][A][N] >::Fourth,
+    };
+
 
     /* *************************************************************************************
         is_base_of structure.
             Determines whether D is inherited by B.
     ************************************************************************************* */
 
-    
+
     #ifdef ISCPP11
         template<class B, class D, typename C = void> struct is_base_of;
 

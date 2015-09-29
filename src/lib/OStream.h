@@ -109,6 +109,13 @@
                     return *this;
                 }
 
+                //Array streaming.
+                template< typename T, unsigned N >
+                    OStream operator<< ( T (&t)[N] ){
+                        for( auto el : t ) *this << el;
+                        return *this;
+                }
+
                 derived &out;
                 OStreamParams params;
         };
@@ -123,7 +130,7 @@
                         return os << data;
                 }
         };
-		#endif
+        #endif
     }; //namespace ios
 
 #endif

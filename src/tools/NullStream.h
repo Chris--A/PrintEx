@@ -14,7 +14,7 @@
 		void flush()                 { return; }
 		int peek()                   { return -1; }
 		int read()                   { return -1; }
-		size_t write( uint8_t data ) { return data, 0x01; }
+		size_t write( uint8_t data ) { return (void)data, 0x01; }
 	};
 
 #endif

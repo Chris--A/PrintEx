@@ -16,7 +16,6 @@
             An IO class for Print functionality targeting EEPROM memory.
     ***************************************************************************/
     #ifdef __AVR__
-        #include <avr/eeprom.h>
         typedef struct EEPROMPrinter : NonStreamingIO, PrintExtension, Printable{
             template< typename T >
                 CONSTEXPR EEPROMPrinter( const T dataPtr )
