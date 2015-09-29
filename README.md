@@ -1,4 +1,4 @@
-# `PrintEx` Library for Arduino ![Version 1.1.7](https://img.shields.io/badge/Version-1.1.7-blue.svg)
+# `PrintEx` Library for Arduino ![Version 1.1.8](https://img.shields.io/badge/Version-1.1.8-blue.svg)
 
 **Written by:** *Christopher Andrews*.  
 **Copyright:** _**2013**_*(`GString`)*-_**2015**_*(`PrintEx`)*, *Christopher Andrews, Released under MIT licence*.
