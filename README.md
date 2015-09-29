@@ -1,7 +1,13 @@
-# `PrintEx` Library for Arduino ![Version 1.1.6](https://img.shields.io/badge/Version-1.1.6-blue.svg)
+# `PrintEx` Library for Arduino ![Version 1.1.7](https://img.shields.io/badge/Version-1.1.7-blue.svg)
 
 **Written by:** *Christopher Andrews*.  
 **Copyright:** _**2013**_*(`GString`)*-_**2015**_*(`PrintEx`)*, *Christopher Andrews, Released under MIT licence*.
+
+**Supported Platforms**:   
+![Basic Arduino](https://img.shields.io/badge/Arduino-AVR-brightgreen.svg) 
+![Arduino Zero](https://img.shields.io/badge/Arduino_Zero-SAMD-yellowgreen.svg)
+![Arduino Due](https://img.shields.io/badge/Arduino_Due-SAM-orange.svg)
+![ESP8266](https://img.shields.io/badge/ESP8266-Xtensa-yellow.svg)
 
 ## About
 
@@ -23,6 +29,9 @@ A sample of Arduino libraries which can be extended are as follows:
 - Any other library that inherits `Print` or `Stream`.
 
 ## Contents:
+
+*A limited number of features require C\+\+11, the Arduino Zero & ESP8266 already has this enabled, however the rest of the supported cores will have to wait for the release of IDE 1.6.6, if you do not want to wait, there is some info [here](http://arduino.land/FAQ/content/2/49/en/can-c11-be-used-with-arduino.html) explaining how to enable C\+\+11.*
+
 - [Basic Usage.](#basic-usage).
   - [Enhancing any `Stream` or `Print` based object](#1-enhancing-any-stream-or-print-based-object).
   - [Streaming data (in/out)](#2-streaming-inout). ![C++11 Only!](https://img.shields.io/badge/Requires-C++11-orange.svg)
