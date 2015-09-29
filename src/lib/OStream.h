@@ -109,12 +109,13 @@
                     return *this;
                 }
 
+
                 //Array streaming.
-                template< typename T, unsigned N >
-                    OStream operator<< ( T (&t)[N] ){
+                /*template< typename T, unsigned N >
+                    typename enable_if<!is_same<typename ArrayInfo<T>::UnderlyingType,char>::value,OStream>::type operator<< ( T (&t)[N] ){
                         for( auto el : t ) *this << el;
                         return *this;
-                }
+                }*/
 
                 derived &out;
                 OStreamParams params;

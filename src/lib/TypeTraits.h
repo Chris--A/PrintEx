@@ -59,8 +59,8 @@
             'value' will be set to true if t is a integer type ( 8 to 64 bit, signed / unsigned ).
             This is the compile time constant version of IsIntType().
     ***********************************************************************************************/
-/*
-    template< typename T >
+
+   /* template< typename T >
         struct is_integer{
             enum{
                 V8    = is_same< T, uint8_t >::value  || is_same< T, int8_t >::value,
@@ -74,7 +74,7 @@
     template< typename T >
         struct is_integer{
             enum{
-                V8    = is_same< T, unsigned char >::value  || is_same< T, signed char >::value,
+                V8    = is_same< T, char >::value || is_same< T, unsigned char >::value  || is_same< T, signed char >::value,
                 V16   = is_same< T, unsigned int >::value || is_same< T, signed int >::value,
                 V32   = is_same< T, unsigned long >::value || is_same< T, signed long >::value,
                 V64   = is_same< T, unsigned long long >::value || is_same< T, signed long long >::value,

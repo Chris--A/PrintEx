@@ -63,13 +63,13 @@
                         input.readBytes(g.start, g.len);
                         return *this;
                 }
-
+/*
                 //Array streaming.
                 template< typename T, unsigned N >
                     IStream operator>> ( T (&t)[N] ){
                         for( auto el : t ) *this >> el;
                         return *this;
-                }
+                }*/
 
                 derived &input;
         };
