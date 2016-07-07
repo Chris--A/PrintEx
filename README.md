@@ -1,4 +1,4 @@
-# `PrintEx` Library for Arduino ![Version 1.1.8](https://img.shields.io/badge/Version-1.1.8-blue.svg)
+# `PrintEx` Library for Arduino ![Version 1.1.10](https://img.shields.io/badge/Version-1.1.10-blue.svg)
 
 **Written by:** *Christopher Andrews*.  
 **Copyright:** _**2013**_*(`GString`)*-_**2015**_*(`PrintEx`)*, *Christopher Andrews, Released under MIT licence*.
@@ -273,6 +273,7 @@ Object  | Description
 **`CRCStream`**  | This object calculates a running CRC for the input and output data streams of a `Stream` object associated with it.
 **`RxTxCoutner`**  | This object keeps track of how much data passes through its interfaces.
 **`NullStream`**  | A data stream with origins unknown.
+**`PrintAdapter`**  | Converts a `Print` object into a `Stream` object.
 ---
 
 ## Core Interfaces
