@@ -8,7 +8,7 @@
 #ifndef HEADER_NULLSTREAM
     #define HEADER_NULLSTREAM
 
-	struct NullStream : Stream, PrintExtension{
+	struct NullStream : StreamExtension, PrintExtension{
 		NullStream()                 {}
 		int available()              { return 0; }
 		void flush()                 { return; }
