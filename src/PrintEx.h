@@ -17,6 +17,7 @@
 #include "tools/CRCStream/CRCStream.h"
 #include "tools/RxTxCounter.h"
 #include "tools/NullStream.h"
+#include "tools/PrintAdapter.h"
 
 #ifdef ISCPP11
     template<
