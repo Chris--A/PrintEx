@@ -21,6 +21,7 @@ URIEncoder	KEYWORD1
 CRCStream	KEYWORD1
 RxTxCounter	KEYWORD1
 NullStream	KEYWORD1
+PrintAdapter	KEYWORD1
 
 #######################################
 # Members (KEYWORD2)
