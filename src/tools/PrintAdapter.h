@@ -9,7 +9,7 @@
 #ifndef HEADER_PRINTADAPTER
     #define HEADER_PRINTADAPTER
 
-        class PrintAdapter : public StreamExtension{
+        class PrintAdapter : public PrintExtension, public StreamExtension{
             public:
             
                 PrintAdapter( Print &target ) : out(target) {}
