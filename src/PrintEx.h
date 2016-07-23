@@ -43,10 +43,9 @@
         typename = typename enable_if<!is_base_of<PrintExtension,D>::value>::type,
         typename = typename enable_if<!is_base_of<StreamExtension,D>::value>::type
     >
-        ios::OStream<PrintExtension> operator<< ( D &print, const T &data ){
+        D &operator<< ( D &print, const T &data ){
             PrintEx printer = print;
-            ios::OStream<PrintExtension> os( printer );
-            return os << data;
+            return printer << data, print;
     }
 
     template<
@@ -55,10 +54,8 @@
         typename = typename enable_if<is_base_of<Stream,D>::value>::type,
         typename = typename enable_if<!is_base_of<StreamExtension,D>::value>::type
     >
-        ios::IStream<StreamExtension> operator>> ( D &stream, T &data ){
+        D &operator>> ( D &stream, T &data ){
             StreamEx streamer = stream;
-            ios::IStream<StreamExtension> os( streamer );
-            return os >> data;
+            return streamer >> data, stream;
     }
-
 #endif
