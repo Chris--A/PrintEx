@@ -3,22 +3,22 @@
         https://github.com/Chris--A/PrintEx
 
         Released using: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
-		
-		You should have received a copy of the licence with the software 
-		package. You can also view a copy of the full licence here:
-		https://github.com/Chris--A/PrintEx/blob/master/LICENSE
-		
-		The only exception to the licence applies when a piece of software
-		used within PrintEx, and uses a less restrictive licence or is 
-		public domain. However, these items will be marked accordingly
-		with a link or reference of its origins.
-		
-		The exception mentioned in the above paragraph only applies to the
-		particular lines of code that may be licensed differently, and does
-		not remove the GNU GPLv3 restrictions from the remainder of the 
-		source which contains these items, or other source files used in
-		conjunction with them.
-		
+
+        You should have received a copy of the licence with the software
+        package. You can also view a copy of the full licence here:
+        https://github.com/Chris--A/PrintEx/blob/master/LICENSE
+
+        The only exception to the licence applies when a piece of software
+        used within PrintEx, and uses a less restrictive licence or is
+        public domain. However, these items will be marked accordingly
+        with a link or reference of its origins.
+
+        The exception mentioned in the above paragraph only applies to the
+        particular lines of code that may be licensed differently, and does
+        not remove the GNU GPLv3 restrictions from the remainder of the
+        source which contains these items, or other source files used in
+        conjunction with them.
+
 ********************************************************************************/
 
 /********************************************************************************
@@ -37,15 +37,43 @@
 
     struct NullType{};
 
-    /***********************************************************************************************
+    /***
+        transform function.
+            This will safely convert unrelated types.
+    ***/
+
+    template< typename U, typename T > U transform( T t ){
+        union{ T _t; U _u; } _t = { t };
+        return _t._u;
+    }
+
+    /***
+        integral_constant implementation sourced from cppreference.com
+        http://en.cppreference.com/w/cpp/types/integral_constant
+    ***/
+
+    template<class T, T v>
+    struct integral_constant {
+        static constexpr T value = v;
+        typedef T value_type;
+        typedef integral_constant type;
+        constexpr operator value_type() const noexcept { return value; }
+        constexpr value_type operator()() const noexcept { return value; }  //Added to C++ standard library in C++14
+    };
+
+    typedef integral_constant<bool, true> true_type;
+    typedef integral_constant<bool, false> false_type;
+
+    /***
         select template.
-            If V is true, type is T, otherwise U.
-    ***********************************************************************************************/
+        If V is true, type is T, otherwise U.
+    ***/
 
     template< bool V, typename T, typename U > struct select { typedef U type; };
     template<typename T, typename U > struct select<true,T,U>{ typedef T type; };
 
-    /***********************************************************************************************
+
+    /***
         enable_if template.
             Similar to select, however if V is false, then type is undefined.
 
@@ -54,7 +82,7 @@
             However you can use it to generate errors in C++98 when conditions aren't met.
 
             C++11: T can be omitted and `void` will be used.
-    ***********************************************************************************************/
+    ***/
 
     #ifdef ISCPP11
         template< bool V, typename T = void > struct enable_if{};
@@ -63,31 +91,14 @@
     #endif
     template< typename T > struct enable_if< true, T >{ typedef T type; };
 
-    /***********************************************************************************************
+    /***
         is_same structure.
-            The template takes two types.
-            If T is the same type as U value is true, otherwise false.
-    ***********************************************************************************************/
+        The template takes two types.
+        If T is the same type as U value is true, otherwise false.
+    ***/
 
-    template < typename T, typename U > struct is_same{ enum { value = false }; };
-    template < typename T > struct is_same< T, T >    { enum { value = true }; };
-
-    /***********************************************************************************************
-        is_integer structure.
-            'value' will be set to true if t is a integer type ( 8 to 64 bit, signed / unsigned ).
-            This is the compile time constant version of IsIntType().
-    ***********************************************************************************************/
-
-   /* template< typename T >
-        struct is_integer{
-            enum{
-                V8    = is_same< T, uint8_t >::value  || is_same< T, int8_t >::value,
-                V16   = is_same< T, uint16_t >::value || is_same< T, int16_t >::value,
-                V32   = is_same< T, uint32_t >::value || is_same< T, int32_t >::value,
-                V64   = is_same< T, uint64_t >::value || is_same< T, int64_t >::value,
-                value = V8 || V16 || V32 || V64
-            };
-    };*/
+    template < typename T, typename U > struct is_same : false_type{};
+    template < typename T > struct is_same< T, T > : true_type{};
 
     template< typename T >
         struct is_integer{
@@ -105,137 +116,105 @@
     template< typename T > struct is_bool{ enum{ value = is_same< T, bool >::value }; };
     template< typename T > struct is_fundamental{ enum{ value = is_number<T>::value || is_bool<T>::value }; };
 
-    /*** is_pointer can allow generic template functions to discriminate based on whether a template type is a pointer. ***/
-    template< typename T > struct is_pointer{ enum{ value = false }; };      //Not a pointer.
-    template< typename T > struct is_pointer<T*>{ enum{ value = true }; };   //A standard pointer.
-    template< typename T > struct is_pointer<T*&>{ enum{ value = true }; };  //A reference to a pointer (is still considered a pointer in usage due to reference semantics).
+    template< typename T > struct is_pointer : false_type{};        //Not a pointer.
+    template< typename T > struct is_pointer<T*> : true_type{};        //A standard pointer.
+    template< typename T > struct is_pointer<T*&> : true_type{};    //A reference to a pointer (is still considered a pointer in usage due to reference semantics).
+
+    template< typename T > struct is_reference : false_type{};
+    template< typename T > struct is_reference< T& > : true_type{};
+
+    template< typename T > struct is_array : false_type{};
+    template< typename T, size_t N > struct is_array< T[N] > : true_type{};
+
+    template< typename T > struct array_elements{ enum { value = 0 }; };
+    template< typename T, size_t N > struct array_elements< T[N] >{ enum { value = N }; };
+
+    template< typename T > struct array_dimensions{ enum { value = 0 }; };
+    template< typename T, size_t N > struct array_dimensions< T[N] >{ enum { value = 1 + array_dimensions<T>::value }; };
+
+    template< typename T > struct is_const : false_type{};
+    template< typename T > struct is_const<const T> : true_type{};
+    template< typename T > struct is_const<const T&> : true_type{};
 
 
-    /* *************************************************************************************
-        is_array structure.
-            Useful to disambiguate T *t, and T(&t)[N] situations.
-            Switch use over to ArrayInfo as it exposes more information.
-    ************************************************************************************* */
+    /***
+        is_function implementation sourced from cppreference.com
+        http://en.cppreference.com/w/cpp/types/is_function
+    ***/
 
-    template< typename T > struct is_array{ enum { value = false }; };
-    template< typename T, size_t N > struct is_array< T[N] > { enum { value = true }; };
-    template< typename T, size_t A, size_t N > struct is_array< T[A][N] > { enum { value = true }; };
-    template< typename T, size_t B, size_t A, size_t N > struct is_array< T[B][A][N] > { enum { value = true }; };
+    #ifdef ISCPP11
+        // primary template
+        template<class>
+        struct is_function : false_type { };
 
-    /* *************************************************************************************
-        ArrayInfo structure.
-            A useful way to disambiguate multi dimension array's.
-            Also T *t, and T(&t)[N] situations can be solved using IsAnArray value.
-    ************************************************************************************* */
+        // specialization for regular functions
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args...)> : true_type {};
 
-    template< typename T >                             /*--- 'Not an array' specialisation. ---*/
-        struct ArrayInfo{
-            enum{
-                IsAnArray = false,
-                First = 0x00,
-                Dimensions = 0x00,
-            };
+        // specialization for variadic functions such as printf
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args......)> : true_type {};
 
-            typedef T            ThisType;
-            typedef NullType    NextType;
-            typedef ThisType    UnderlyingType;
-    };
+        // specialization for function types that have cv-qualifiers
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args...)const> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args...)volatile> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args...)const volatile> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args......)const> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args......)volatile> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args......)const volatile> : true_type {};
 
-    template< typename T, size_t N >
-        struct ArrayInfo< T[N] >{                     /*--- Single dimension specialisation. ---*/
-            enum{
-                IsAnArray = true,
-                First = N,
-                Dimensions = 0x01,
-            };
-            static const size_t Indicies[ Dimensions ];
-            typedef T ThisType[N];
-            typedef T NextType;
-            typedef T UnderlyingType;
-    };
+        // specialization for function types that have ref-qualifiers
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args...) &> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args...)const &> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args...)volatile &> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args...)const volatile &> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args......) &> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args......)const &> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args......)volatile &> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args......)const volatile &> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args...) &&> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args...)const &&> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args...)volatile &&> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args...)const volatile &&> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args......) &&> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args......)const &&> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args......)volatile &&> : true_type {};
+        template<class Ret, class... Args>
+        struct is_function<Ret(Args......)const volatile &&> : true_type {};
+    #endif
 
-    template< typename T, size_t A, size_t N >
-        struct ArrayInfo< T[A][N] >{                /*--- Two dimensional array specialisation. ---*/
-            enum{
-                IsAnArray = true,
-                First = A,
-                Second = N,
-                Dimensions = 0x02,
-            };
-            static const size_t Indicies[ Dimensions ];
-            typedef T ThisType[A][N];
-            typedef T NextType[N];
-            typedef T UnderlyingType;
-    };
+    /***
+        is_object structure.
+            Determines whether T is an object.
+    ***/
 
-    template< typename T, size_t B, size_t A, size_t N >
-        struct ArrayInfo< T[B][A][N] >{             /*--- Three dimensional array specialisation. ---*/
-            enum{
-                IsAnArray = true,
-                First = B,
-                Second = A,
-                Third = N,
-                Dimensions = 0x03,
-            };
-            static const size_t Indicies[ Dimensions ];
-            typedef T ThisType[B][A][N];
-            typedef T NextType[A][N];
-            typedef T UnderlyingType;
-    };
+    template< typename T > struct is_object{ enum { value = is_function<T>::value || !is_pointer<T>::value || !is_array<T>::value || !is_fundamental<T>::value }; };
 
-    template< typename T, size_t C, size_t B, size_t A, size_t N >
-        struct ArrayInfo< T[C][B][A][N] >{            /*--- Four dimensional array specialisation. ---*/
-            enum{
-                IsAnArray = true,
-                First = C,
-                Second = B,
-                Third = A,
-                Fourth = N,
-                Dimensions = 0x04,
-            };
-            static const size_t Indicies[ Dimensions ];
-            typedef T ThisType[C][B][A][N];
-            typedef T NextType[B][A][N];
-            typedef T UnderlyingType;
-    };
-    /*
-    template< typename T >
-        const size_t ArrayInfo< T >::Indicies[ ArrayInfo< T >::Dimensions ] = {
-            ArrayInfo< T >::First
-    };*/
-
-    template< typename T, size_t N >
-        const size_t ArrayInfo< T[N] >::Indicies[ ArrayInfo< T[N] >::Dimensions ] = {
-            ArrayInfo< T[N] >::First
-    };
-
-    template< typename T, size_t A, size_t N >
-        const size_t ArrayInfo< T[A][N] >::Indicies[ ArrayInfo< T[A][N] >::Dimensions ] = {
-            ArrayInfo< T[A][N] >::First,
-            ArrayInfo< T[A][N] >::Second
-    };
-
-    template< typename T, size_t B, size_t A, size_t N >
-        const size_t ArrayInfo< T[B][A][N] >::Indicies[ ArrayInfo< T[B][A][N] >::Dimensions ] = {
-            ArrayInfo< T[B][A][N] >::First,
-            ArrayInfo< T[B][A][N] >::Second,
-            ArrayInfo< T[B][A][N] >::Third
-    };
-
-    template< typename T, size_t C, size_t B, size_t A, size_t N >
-        const size_t ArrayInfo< T[C][B][A][N] >::Indicies[ ArrayInfo< T[C][B][A][N] >::Dimensions ] = {
-            ArrayInfo< T[C][B][A][N] >::First,
-            ArrayInfo< T[C][B][A][N] >::Second,
-            ArrayInfo< T[C][B][A][N] >::Third,
-            ArrayInfo< T[C][B][A][N] >::Fourth,
-    };
-
-
-    /* *************************************************************************************
+    /***
         is_base_of structure.
             Determines whether D is inherited by B.
-    ************************************************************************************* */
-
+    ***/
 
     #ifdef ISCPP11
         template<class B, class D, typename C = void> struct is_base_of;
