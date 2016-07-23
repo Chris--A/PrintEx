@@ -50,15 +50,21 @@
     /***
         integral_constant implementation sourced from cppreference.com
         http://en.cppreference.com/w/cpp/types/integral_constant
+		
+		Modified for PrintEx
     ***/
 
     template<class T, T v>
     struct integral_constant {
-        static constexpr T value = v;
-        typedef T value_type;
-        typedef integral_constant type;
-        constexpr operator value_type() const noexcept { return value; }
-        constexpr value_type operator()() const noexcept { return value; }  //Added to C++ standard library in C++14
+		#ifdef ISCPP11	
+			static constexpr T value = v;
+			typedef T value_type;
+			typedef integral_constant type;
+			constexpr operator value_type() const noexcept { return value; }
+			constexpr value_type operator()() const noexcept { return value; }  //Added to C++ standard library in C++14
+		#else
+			enum{ value = v };
+		#endif
     };
 
     typedef integral_constant<bool, true> true_type;
@@ -209,8 +215,12 @@
             Determines whether T is an object.
     ***/
 
-    template< typename T > struct is_object{ enum { value = is_function<T>::value || !is_pointer<T>::value || !is_array<T>::value || !is_fundamental<T>::value }; };
-
+	#ifdef ISCPP11
+		template< typename T > struct is_object{ enum { value = !is_function<T>::value || !is_pointer<T>::value || !is_array<T>::value || !is_fundamental<T>::value }; };
+	#else
+		template< typename T > struct is_object{ enum { value = !is_pointer<T>::value || !is_array<T>::value || !is_fundamental<T>::value }; };
+	#endif
+		
     /***
         is_base_of structure.
             Determines whether D is inherited by B.

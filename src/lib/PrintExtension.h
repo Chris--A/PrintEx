@@ -96,15 +96,17 @@
 
     template<typename T>
     struct PrintExWrap :
-            PrintConcat<PrintExWrap<T>>,
-            PrintRepeat<PrintExWrap<T>>,
-            ios::OStreamBase<PrintExWrap<T>>,
-            PrintVariadic<PrintExWrap<T>>,
+            PrintConcat< PrintExWrap<T> >,
+            PrintRepeat< PrintExWrap<T> >,
+            ios::OStreamBase< PrintExWrap<T> >,
+            PrintVariadic< PrintExWrap<T> >,
             T{
 
         /***
             Constructors are provided to allow passing through parameters to wrapped type.
         ***/
+		PrintExWrap() : T() {}
+		
         template<typename A> PrintExWrap( A a ) : T(a) {}
         template<typename A, typename B> PrintExWrap( A a, B b ) : T(a, b) {}
         template<typename A, typename B, typename C> PrintExWrap( A a, B b, C c ) : T(a, b, c) {}
