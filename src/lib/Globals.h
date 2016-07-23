@@ -65,4 +65,6 @@
     #define CRTPP (static_cast<derived*>(this))
     #define CRTPCP (static_cast<derived*>(this))
 
+    #define UNUSED_PARAM(x) (void)x
+
 #endif

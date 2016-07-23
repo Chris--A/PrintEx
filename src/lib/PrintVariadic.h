@@ -33,7 +33,7 @@
             struct PrintVariadic{
 
 				template< typename S >
-                derived &printx_continue(  S s ){ return CRTPO; }
+                derived &printx_continue(  S s ){ return UNUSED_PARAM(s), CRTPO; }
 
                 template< typename T, typename... U >
                     derived &printx( const T& t, const U&... u ){
