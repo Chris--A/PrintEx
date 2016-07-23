@@ -96,7 +96,10 @@
 
                 /** A specialization for integer data. **/
                 template< typename T >
-                    typename enable_if<is_integer<T>::value, OStream>::type operator<< ( const T &data ){
+                    typename enable_if<
+                        is_integer<T>::value &&
+                        !is_same<T,char>::value
+                    , OStream>::type operator<< ( const T &data ){
                         out.print( data, params.base );
                         return *this;
                 }
@@ -117,7 +120,8 @@
                 template<
                     typename T,
                     typename = typename enable_if<
-                        !is_fundamental<T>::value &&
+                        (!is_fundamental<T>::value ||
+                        is_same<T,char>::value) &&
                         !is_base_of<OStreamManipulator<T>,T>::value
                     >::type>
                 OStream operator<< ( const T &data ){
