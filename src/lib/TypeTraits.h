@@ -1,15 +1,33 @@
 /********************************************************************************
-        Copyright 2015 Christopher Andrews.
+        Copyright 2016 Christopher Andrews.
         https://github.com/Chris--A/PrintEx
 
-        This code mimics part of the C++11 STL library which provides
+        Released using: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+		
+		You should have received a copy of the licence with the software 
+		package. You can also view a copy of the full licence here:
+		https://github.com/Chris--A/PrintEx/blob/master/LICENSE
+		
+		The only exception to the licence applies when a piece of software
+		used within PrintEx, and uses a less restrictive licence or is 
+		public domain. However, these items will be marked accordingly
+		with a link or reference of its origins.
+		
+		The exception mentioned in the above paragraph only applies to the
+		particular lines of code that may be licensed differently, and does
+		not remove the GNU GPLv3 restrictions from the remainder of the 
+		source which contains these items, or other source files used in
+		conjunction with them.
+		
+********************************************************************************/
+
+/********************************************************************************
+        This code mimics part of the C++11 standard library which provides
         meta-programming decision making. This is a minimal implementation
         and does not consider newer types such as nullptr_t and char32_t,
         which would be uncommon in basic Arduino applications.
 
         Add an issue to the tracker listed above to request these features.
-
-        Released under MIT licence.
 ********************************************************************************/
 
 #include "Globals.h"

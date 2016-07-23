@@ -1,7 +1,7 @@
 # `PrintEx` Library for Arduino ![Version 1.1.10](https://img.shields.io/badge/Version-1.1.10-blue.svg)
 
 **Written by:** *Christopher Andrews*.  
-**Copyright:** _**2013**_*(`GString`)*-_**2015**_*(`PrintEx`)*, *Christopher Andrews, Released under MIT licence*.
+**Copyright:** _**2013**_*(`GString`)*-_**2016**_*(`PrintEx`)*, *Christopher Andrews, Released under **[GNU GPLv3](/blob/master/LICENSE)** licence* (Feel free to contact me via the issues if you would like to discuss a different licence).
 
 **Supported Platforms**:   
 ![Basic Arduino](https://img.shields.io/badge/Arduino-AVR-brightgreen.svg) 
