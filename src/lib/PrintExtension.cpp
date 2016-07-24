@@ -54,27 +54,6 @@
     #define PRINTF_ERROR_MESSAGE        "Error" //F("Error") may be used also.
 
     /****************************************************************
-        sprintf function.
-            This is a replacement for the globally accessible
-            sprintf. It incorporates the features found in
-            PrintExtension::printf().
-    ****************************************************************/
-
-    #ifndef PRINTEX_NO_SPRINTF
-        int sprintf( char * str, const char * format, ... ){
-
-            GString buf = str;
-
-            va_list vList;
-            va_start( vList, format );
-            const pft p_Return = buf.printf( format, vList );
-            va_end( vList );
-            buf.end();
-            return p_Return;
-        }
-    #endif
-
-    /****************************************************************
         GetParam_XXX functions.
             The variations below proved to be far more efficient
             than using va_arg() directly in printf() when compiled
