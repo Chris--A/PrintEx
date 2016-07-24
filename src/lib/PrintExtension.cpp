@@ -146,12 +146,15 @@
         return p_Return;
     }
 
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wattributes"
     #ifndef ISCPP11
         bool formatTest( const char *&format, const char test ) __attribute__((always_inline));
     #endif
     CONSTEXPR bool formatTest( const char *&format, const char test ){
         return *format == test ? ++format, true : false;
     }
+    #pragma GCC diagnostic pop
 
     //Used to parse the width and precision parameters.
     void parseValue( const char *&format, unsigned int &total ){
