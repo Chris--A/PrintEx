@@ -43,7 +43,10 @@
 
     /*** Non AVR boards ***/
     #ifndef __AVR__
-        #define PRINTF_NO_PROGMEM
+        /*** An exception for ESP8266 boards. ***/
+        #ifndef ARDUINO_ARCH_ESP8266
+            #define PRINTF_NO_PROGMEM
+        #endif
         #define PRINTF_NO_EEPROM
     #endif
 
