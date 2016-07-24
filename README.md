@@ -45,7 +45,9 @@ A sample of Arduino libraries which can be extended are as follows:
 - [Custom Configuration](#custom-configuration)
 - [Licence terms and conditions (GNU GPLv3)](/LICENSE)
 - [Credits](#special-thanks)
+
 ---
+
 ## Basic Usage
 #### 1. Enhancing any `Stream` or `Print` based object.
 
