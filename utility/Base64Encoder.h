@@ -22,7 +22,7 @@
 ********************************************************************************/
 
 #include <inttypes.h>
-#include "../../lib/PrintExtension.h"
+#include "../PrintExtension.h"
 
 #ifndef HEADER_BASE64ENCODER
     #define HEADER_BASE64ENCODER
