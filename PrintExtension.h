@@ -71,11 +71,6 @@
 
             pft _printf( const char *format, const va_list &v_List );
 
-            // Global sprintf replacement. To keep old version define PRINTEX_NO_SPRINTF (does not affect x.printf();)
-            #ifndef PRINTEX_NO_SPRINTF
-                friend int sprintf( char * str, const char * format, ... );
-            #endif
-
         private:
             void cwrite( uint8_t data, pfct &counter );
     };
@@ -139,5 +134,10 @@
             return p_Return;
         }
     };
+	
+	// Global sprintf replacement. To keep old version define PRINTEX_NO_SPRINTF (does not affect x.printf();)
+	#ifndef PRINTEX_NO_SPRINTF
+		#define sprintf(buff, str, ...) GString(buff).printf(str, __VA_ARGS__);
+	#endif	
 
 #endif
