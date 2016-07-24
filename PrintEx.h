@@ -23,29 +23,17 @@
 
 #define PRINTEX_VERSION        10200
 
-#if ARDUINO < 153
-	#include "MemoryPrinter.h"
-	#include "StreamExtension.h"
-	#include "utility/BufferedPrinter.h"
-	#include "utility/DualPrinter.h"
-	#include "utility/Base64Encoder.h"
-	#include "utility/URIEncoder.h"
-	#include "utility/CRCStream.h"
-	#include "utility/RxTxCounter.h"
-	#include "utility/NullStream.h"
-	#include "utility/PrintAdapter.h"
-#else
-	#include "lib/MemoryPrinter.h"
-	#include "lib/StreamExtension.h"
-	#include "tools/BufferedPrinter.h"
-	#include "tools/DualPrinter.h"
-	#include "tools/Base64Encoder/Base64Encoder.h"
-	#include "tools/URIEncoder/URIEncoder.h"
-	#include "tools/CRCStream/CRCStream.h"
-	#include "tools/RxTxCounter.h"
-	#include "tools/NullStream.h"
-	#include "tools/PrintAdapter.h"
-#endif
+#include "lib/MemoryPrinter.h"
+#include "lib/StreamExtension.h"
+
+#include "tools/BufferedPrinter.h"
+#include "tools/DualPrinter.h"
+#include "tools/Base64Encoder/Base64Encoder.h"
+#include "tools/URIEncoder/URIEncoder.h"
+#include "tools/CRCStream/CRCStream.h"
+#include "tools/RxTxCounter.h"
+#include "tools/NullStream.h"
+#include "tools/PrintAdapter.h"
 
 #ifdef ISCPP11
     template<
