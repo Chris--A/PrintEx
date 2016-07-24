@@ -86,6 +86,14 @@
             struct OStream{
 
                 OStream( derived &host ) : out(host) {}
+				OStream( derived &host, const OStreamParams &params ) : out(host), params{params} {}
+		
+                /** Internal hook for global streaming. **/
+                //inline OStream operator<< ( const OStreamParams &params ){
+				//	this.params = params;
+                //    return *this;
+                //}
+				
 
                 /** Handle manipulators. **/
                 template< typename T >

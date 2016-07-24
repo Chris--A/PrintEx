@@ -36,6 +36,18 @@
 #include "tools/PrintAdapter.h"
 
 #ifdef ISCPP11
+    struct PrintExTemporary{
+        PrintEx out;
+        ios::OStreamParams params;
+
+        template<typename T>
+        PrintExTemporary operator <<( const T &data ){
+            ios::OStream<PrintExtension> os( out, params );
+            params = (os << data).params;
+            return *this;
+        }
+    };
+
     template<
         typename D,
         typename T,
@@ -43,9 +55,8 @@
         typename = typename enable_if<!is_base_of<PrintExtension,D>::value>::type,
         typename = typename enable_if<!is_base_of<StreamExtension,D>::value>::type
     >
-        D &operator<< ( D &print, const T &data ){
-            PrintEx printer = print;
-            return printer << data, print;
+        PrintExTemporary operator<< ( D &print, const T &data ){
+            return PrintExTemporary{print} << data;
     }
 
     template<
