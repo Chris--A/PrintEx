@@ -1,13 +1,15 @@
-# `PrintEx` Library for Arduino ![Version 1.1.10](https://img.shields.io/badge/Version-1.1.10-blue.svg)
+# `PrintEx` Library for Arduino ![Version 1.1.10](https://img.shields.io/badge/Version-1.2.0-blue.svg)
 
 **Written by:** *Christopher Andrews*.  
-**Copyright:** _**2013**_*(`GString`)*-_**2016**_*(`PrintEx`)*, *Christopher Andrews, Released under **[GNU GPLv3](/blob/master/LICENSE)** licence* (Feel free to contact me via the issues if you would like to discuss a different licence).
+**Copyright:** _**2013**_*(`GString`)*-_**2016**_*(`PrintEx`)*, *Christopher Andrews, Released under [GNU GPLv3](/LICENSE) licence* (Feel free to contact me via the issues if you would like to discuss a different licence).
 
 **Supported Platforms**:   
 ![Basic Arduino](https://img.shields.io/badge/Arduino-AVR-brightgreen.svg) 
 ![Arduino Zero](https://img.shields.io/badge/Arduino_Zero-SAMD-yellowgreen.svg)
 ![Arduino Due](https://img.shields.io/badge/Arduino_Due-SAM-orange.svg)
-![ESP8266](https://img.shields.io/badge/ESP8266-Xtensa-yellow.svg)
+![ESP8266](https://img.shields.io/badge/ESP8266-Xtensa-yellow.svg)  
+![Teensy 2 upto 3.5 including LC](https://img.shields.io/badge/Teensy-2_to_3.5,_LC-brown.svg) 
+![ChipKit UNO32](https://img.shields.io/badge/ChipKit-UNO32-66CCCE.svg)
 
 ## About
 
@@ -30,20 +32,23 @@ A sample of Arduino libraries which can be extended are as follows:
 
 ## Contents:
 
-*A limited number of features require C\+\+11, the Arduino Zero & ESP8266 already has this enabled, however the rest of the supported cores will have to wait for the release of IDE 1.6.6, if you do not want to wait, there is some info [here](http://arduino.land/FAQ/content/2/49/en/can-c11-be-used-with-arduino.html) explaining how to enable C\+\+11.*
+*A limited number of features require C\+\+11. The basic Arduino's now have this support in IDE versions 1.6.6 and above. The Arduino Zero & ESP8266 already has this enabled. If you are using an old IDE there is some info [here](http://arduino.land/FAQ/content/2/49/en/can-c11-be-used-with-arduino.html) explaining how to enable C\+\+11. However if you are attempting to use an IDE below 1.5.8 you will have to upgrade to make use of the additional features.*
 
-- [Basic Usage.](#basic-usage).
-  - [Enhancing any `Stream` or `Print` based object](#1-enhancing-any-stream-or-print-based-object).
+
+- [Basic Usage.](#basic-usage)
+  - [Enhancing any `Stream` or `Print` based object](#1-enhancing-any-stream-or-print-based-object)
   - [Streaming data (in/out)](#2-streaming-inout). ![C++11 Only!](https://img.shields.io/badge/Requires-C++11-orange.svg)
-  - [Using chainable functions](#3-using-chainable-functions).
-  - [`printf` formatting](#4-printf-formatting).
-- [Helpers & Tools](#helpers--tools). 
-- [Core Interfaces](#core-interfaces).
-- [Custom Configuration](#custom-configuration).
-
+  - [Using chainable functions](#3-using-chainable-functions)
+  - [`printf` formatting](#4-printf-formatting)
+- [Helpers & Tools](#helpers--tools)
+- [Core Interfaces](#core-interfaces)
+- [Custom Configuration](#custom-configuration)
+- [Licence terms and conditions (GNU GPLv3)](/LICENSE)
+- [Credits](#special-thanks)
 ---
 ## Basic Usage
 #### 1. Enhancing any `Stream` or `Print` based object.
+
 To extend an already existing object like `Serial`, or `EthernetClient` you'll need to make use of either `StreamEx` or `PrintEx`. 
 
 **Note:** This section does not apply to streaming functionality, it is available by default (see the [next section](#2-streaming-inout) for more info).
@@ -317,4 +322,7 @@ Define  | Action if defined
 **`PRINTEX_NO_REPEAT`**  | Do not include character repeat functionality (`%n`).
 **`PRINTEX_NO_ERROR_CONDITION`**  | Do not include error handling (`Error` is printed on bad inputs/failed operation).
 
+## Special Thanks
+Some people who have helped develop ideas & proposals.  
+- **[bperrybap](https://github.com/bperrybap)**
 
