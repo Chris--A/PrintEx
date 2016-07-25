@@ -52,6 +52,23 @@
 
     #define PRINTF_CONVERT_BUFFER_LEN   24
     #define PRINTF_ERROR_MESSAGE        "Error" //F("Error") may be used also.
+	
+	#ifndef PRINTEX_NO_STDOUT
+	
+		Print *PrintEx::_stdout = &Serial;
+		namespace std{
+		#ifndef PRINTEX_NO_PROGMEM
+			pft printf( const __FlashStringHelper *format, ... ){
+				va_list vList;
+				va_start( vList, format );
+				PrintEx p(*PrintEx::_stdout);
+				const pft p_Return = p._printf(format, strlen_P((const char*)format)+1, vList);
+				va_end( vList );
+				return p_Return;				
+			}
+		#endif
+		}
+	#endif	
 
     /****************************************************************
         GetParam_XXX functions.

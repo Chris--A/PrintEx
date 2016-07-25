@@ -33,8 +33,10 @@
     #define PRINTEX_NO_FLOATING_POINT
     #define PRINTEX_NO_REPEAT
     #define PRINTEX_NO_ERROR_CONDITION
-    #define PRINTEX_NO_SPRINTF
     #define PRINTEX_LARGE_COUNTER
+
+    #define PRINTEX_NO_SPRINTF
+	#define PRINTEX_NO_STDOUT
 ********************************************************************************/
 
 #include "Arduino.h"
@@ -53,6 +55,18 @@
     #else
         typedef uint8_t pfct;
     #endif
+	
+	namespace std{
+		#ifndef PRINTEX_NO_STDOUT
+		
+			template<signed N>
+			pft printf( const char (&format)[N], ... );
+			
+			#ifndef PRINTEX_NO_PROGMEM
+				pft printf( const __FlashStringHelper *format, ... );
+			#endif
+		#endif
+	};			
 
     class PrintExtension
         :   public Print,
@@ -75,6 +89,16 @@
 
             pft _printf( const char *format, const va_list &v_List );
 
+			#ifndef PRINTEX_NO_STDOUT
+			
+				template<signed N>
+				friend pft std::printf( const char (&format)[N], ... );
+				
+				#ifndef PRINTEX_NO_PROGMEM
+					friend pft std::printf( const __FlashStringHelper *format, ... );
+				#endif
+			#endif
+
             #ifndef PRINTEX_NO_PROGMEM
                 pft _printf( const __FlashStringHelper *format, const int count, const va_list &vList );
             #endif
@@ -95,6 +119,10 @@
         static PrintExWrap<T> &wrap( T &t ){
             return *transform<PrintExWrap<T>*, T*>(&t);
         }
+		
+		#ifndef PRINTEX_NO_STDOUT
+			static Print *_stdout;
+		#endif
     };
 
     template<typename T>
@@ -159,5 +187,25 @@
     #ifndef PRINTEX_NO_SPRINTF
         #define sprintf(buff, str, ...) GString(buff).printf(str, __VA_ARGS__);
     #endif
+	namespace std{
+		#ifndef PRINTEX_NO_STDOUT
+		
+			template<signed N>
+			pft printf( const char (&format)[N], ... ){
+				va_list vList;
+				va_start( vList, format );
+				PrintEx p = *PrintEx::_stdout;			
+				const pft p_Return = p._printf(format, vList);
+				va_end( vList );
+				return p_Return;	
+			}
+			
+			#ifndef PRINTEX_NO_PROGMEM
+				pft printf( const __FlashStringHelper *format, ... );
+			#endif
+		#endif
+	};
+	
+	//using ::std::printf;
 
 #endif
