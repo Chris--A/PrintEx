@@ -64,12 +64,20 @@
 
             pft printf( const char *format, ... );
 
+            #ifndef PRINTEX_NO_PROGMEM
+                pft printf( const __FlashStringHelper *format, ... );
+            #endif
+
         protected:
 
             friend class StreamExtension;
             template<typename T> friend struct PrintExWrap;
 
             pft _printf( const char *format, const va_list &v_List );
+
+            #ifndef PRINTEX_NO_PROGMEM
+                pft _printf( const __FlashStringHelper *format, const int count, const va_list &vList );
+            #endif
 
         private:
             void cwrite( uint8_t data, pfct &counter );
@@ -100,8 +108,8 @@
         /***
             Constructors are provided to allow passing through parameters to wrapped type.
         ***/
-		PrintExWrap() : T() {}
-		
+        PrintExWrap() : T() {}
+
         template<typename A> PrintExWrap( A a ) : T(a) {}
         template<typename A, typename B> PrintExWrap( A a, B b ) : T(a, b) {}
         template<typename A, typename B, typename C> PrintExWrap( A a, B b, C c ) : T(a, b, c) {}
@@ -133,11 +141,23 @@
             va_end( vList );
             return p_Return;
         }
+
+        #ifndef PRINTEX_NO_PROGMEM
+            pft printf( const __FlashStringHelper *format, ... ){
+                va_list vList;
+                va_start( vList, format );
+                PrintEx p = *this;
+                const pft p_Return = p._printf( format, strlen_P((const char*)format)+1, vList );
+                va_end( vList );
+                return p_Return;
+            }
+        #endif
+
     };
-	
-	// Global sprintf replacement. To keep old version define PRINTEX_NO_SPRINTF (does not affect x.printf();)
-	#ifndef PRINTEX_NO_SPRINTF
-		#define sprintf(buff, str, ...) GString(buff).printf(str, __VA_ARGS__);
-	#endif	
+
+    // Global sprintf replacement. To keep old version define PRINTEX_NO_SPRINTF (does not affect x.printf();)
+    #ifndef PRINTEX_NO_SPRINTF
+        #define sprintf(buff, str, ...) GString(buff).printf(str, __VA_ARGS__);
+    #endif
 
 #endif
