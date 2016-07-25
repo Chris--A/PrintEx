@@ -212,13 +212,13 @@
 
                     #ifndef PRINTF_NO_PROGMEM
                         }else if( *format == CHAR_p ){
-                            print( PString( ( void* ) GetParam_int( vList ) ) );
+                            counter += print( PString( ( void* ) GetParam_int( vList ) ) );
                             continue;
                     #endif
 
                     #ifndef PRINTF_NO_EEPROM
                         }else if( *format == CHAR_r ){
-                            print( EString( ( void* ) GetParam_int( vList ), width ) );
+                            counter += print( EString( ( void* ) GetParam_int( vList ), width ) );
                             continue;
                     #endif
 
@@ -226,8 +226,8 @@
                         }else if( *format == CHAR_n ){
                             const int i_Data = GetParam_int( vList );
                             while( width-- ){
-                                if( largeType ) print( ( char* ) i_Data );
-                                else            print( ( char ) i_Data );
+                                if( largeType ) counter += print( ( char* ) i_Data );
+                                else            counter += print( ( char ) i_Data );
                             }
                             continue;
                     #endif
