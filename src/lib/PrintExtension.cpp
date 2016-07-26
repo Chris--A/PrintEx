@@ -80,7 +80,7 @@
             Helper for printf.
     ****************************************************************/
 
-    inline void PrintExtension::cwrite( uint8_t data, pfct &counter ){
+    inline void PrintExtension::cwrite( const uint8_t &data, pfct &counter ){
         write( data );
         ++counter;
     }
@@ -154,10 +154,8 @@
 
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wattributes"
-    #ifndef ISCPP11
-        bool formatTest( const char *&format, const char test ) __attribute__((always_inline));
-    #endif
-    CONSTEXPR bool formatTest( const char *&format, const char test ){
+    bool formatTest( const char *&format, const char test ) __attribute__((always_inline));
+    bool formatTest( const char *&format, const char test ){
         return *format == test ? ++format, true : false;
     }
     #pragma GCC diagnostic pop
@@ -218,8 +216,8 @@
                         width = width >= sizeof(int*) ? width : sizeof(int*);
                     }
 
-                    //Convert argument into a string.
-                    if( *format == CHAR_s ){                                                    //String.
+                    //String.
+                    if( *format == CHAR_s ){
                         char *c_Parameter = ( char* ) GetParam_int( vList );
                         convertStr.assign( c_Parameter, strlen( c_Parameter ) );
 
@@ -285,7 +283,7 @@
                         convertStr.assign( buffer, 1 );
 
                     #if ( defined( PRINTF_NO_EEPROM ) || defined( PRINTF_NO_FLOATING_POINT ) || defined( PRINTF_NO_PROGMEM ) ) && !defined( PRINTF_NO_ERROR_CONDITION )
-                        }else
+                        }else{
                             convertStr.print( PRINTF_ERROR_MESSAGE );
                     #else
                         }

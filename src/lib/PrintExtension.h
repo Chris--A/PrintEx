@@ -72,7 +72,7 @@
             pft _printf( const char *format, const va_list &v_List );
 
         private:
-            void cwrite( uint8_t data, pfct &counter );
+            void cwrite( const uint8_t &data, pfct &counter );
     };
 
     //Forward declaration as PrintEx uses PrintExWrap
