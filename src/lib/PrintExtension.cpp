@@ -43,6 +43,7 @@
     #define CHAR_p             'p'
     #define CHAR_q             'q'
     #define CHAR_r             'r'
+    #define CHAR_S             'S'
     #define CHAR_s             's'
     #define CHAR_t             't'
     #define CHAR_u             'u'
@@ -128,7 +129,7 @@
             Specifier:
 
                 s:    String ( null terminated ).
-                t:    PROGMEM string. No formatting takes place, the string is printed directly.
+                S:    PROGMEM string. No formatting takes place, the string is printed directly.
                 q:    EEPROM string. No formatting takes place, the string is printed directly.
                 d:    Signed decimal integer ( 32bits max ).
                 i:    Same as 'd'.
@@ -247,7 +248,7 @@
 
                     //PROGMEM functionality.
                     #ifndef PRINTF_NO_PROGMEM
-                        }else if( *format == CHAR_t ){
+                        }else if( *format == CHAR_S ){
                             counter += print( PString( ( void* ) GetParam_int( vList ) ) );
                             continue;
                     #endif
