@@ -64,13 +64,16 @@
             public PrintVariadic<PrintExtension>{
         public:
 
-            pft printf( const char *format, ... );
+            pft printf__( const char *format, ... );
 
             #ifndef PRINTEX_NO_PROGMEM
-                pft printf( const __FlashStringHelper *format, ... );
+                pft printf__( const __FlashStringHelper *format, ... );
             #endif
 
         protected:
+
+            friend pft printf__( const char *format, ... );
+            friend pft printf__( const __FlashStringHelper *format, ... );
 
             friend class StreamExtension;
             template<typename T> friend struct PrintExWrap;
@@ -168,6 +171,27 @@
 
     // A workaround for global printf. Use xprintf to use PrintEx features.
     #ifndef PRINTEX_NO_STDOUT
-        #define xprintf(str, ...) PrintEx(*PrintEx::_stdout).printf(str, __VA_ARGS__);
+
+        #define printf(format, ...)  printf__(format, __VA_ARGS__)
+
+        inline pft printf__( const char *format, ... ){
+            va_list vList;
+            va_start( vList, format );
+            const pft p_Return = PrintEx(*PrintEx::_stdout)._printf( format, vList );
+            va_end( vList );
+            return p_Return;
+        }
+
+        #ifndef PRINTEX_NO_PROGMEM
+            inline pft printf__( const __FlashStringHelper *format, ... ){
+                va_list vList;
+                va_start( vList, format );
+                const pft p_Return = PrintEx(*PrintEx::_stdout)._printf( format, strlen_P((const char*)format)+1, vList );
+                va_end( vList );
+                return p_Return;
+            }
+        #endif
+
+        #define xprintf(str, ...) PrintEx(*PrintEx::_stdout).printf__(str, __VA_ARGS__);
     #endif
 #endif
