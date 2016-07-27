@@ -113,7 +113,7 @@
                     q:  When using '%q' to read the EEPROM the width is the number of
                         characters to read.
 
-                    n:  Number of times to run repeat function.
+                    r:  Number of times to run repeat function.
 
             Precision:
 
@@ -160,8 +160,6 @@
         }
     #endif
 
-
-
     pft PrintExtension::printf( const char *format, ... ){
         va_list vList;
         va_start( vList, format );
@@ -182,8 +180,6 @@
     void parseValue( const char *&format, unsigned int &total ){
         for ( ; *format >= CHAR_ZERO && *format <= CHAR_NINE; ++format )(total *= 10) += *format - CHAR_ZERO;
     }
-
-
 
 
     pft PrintExtension::_printf( const char *format, const va_list &vList ){
