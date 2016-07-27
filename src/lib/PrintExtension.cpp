@@ -53,12 +53,64 @@
     #define PRINTF_CONVERT_BUFFER_LEN   24
     #define PRINTF_ERROR_MESSAGE        "Error" //F("Error") may be used also.
 
-    #ifndef PRINTEX_NO_STDOUT
-        Print *PrintEx::_stdout = &Serial;
-    #endif
-
     #ifdef printf
         #undef printf
+    #endif
+
+    /***
+        PrintExtension printf() functionality.
+    ***/
+
+    pft PrintExtension::PRINTF_ALIAS( const char *format, ... ){
+        va_list vList;
+        va_start( vList, format );
+        const pft p_Return = _printf( format, vList );
+        va_end( vList );
+        return p_Return;
+    }
+
+    #ifndef PRINTEX_NO_PROGMEM
+        pft PrintExtension::PRINTF_ALIAS( const __FlashStringHelper *format, ... ){
+            va_list vList;
+            va_start( vList, format );
+            const pft p_Return = _printf( format, strlen_P((const char*)format)+1, vList );
+            va_end( vList );
+            return p_Return;
+        }
+
+        pft PrintExtension::_printf( const __FlashStringHelper *format, const int count, const va_list &vList ){
+            char buffer[count];
+            return _printf( strcpy_P( buffer, (const char*)format ), vList );
+        }
+    #endif
+
+
+    /***
+        Global printf() functionality.
+    ***/
+
+    #ifndef PRINTEX_NO_STDOUT
+
+        //Storage location for 'stdout' Print pointer.
+        Print *PrintEx::_stdout = &Serial;
+
+        pft PRINTF_ALIAS( const char *format, ... ){
+            va_list vList;
+            va_start( vList, format );
+            const pft p_Return = PrintEx(*PrintEx::_stdout)._printf( format, vList );
+            va_end( vList );
+            return p_Return;
+        }
+
+        #ifndef PRINTEX_NO_PROGMEM
+            pft PRINTF_ALIAS( const __FlashStringHelper *format, ... ){
+                va_list vList;
+                va_start( vList, format );
+                const pft p_Return = PrintEx(*PrintEx::_stdout)._printf( format, strlen_P((const char*)format)+1, vList );
+                va_end( vList );
+                return p_Return;
+            }
+        #endif
     #endif
 
     /****************************************************************
@@ -146,31 +198,6 @@
                 %:    Escape character for printing '%'
     ****************************************************************/
 
-    #ifndef PRINTEX_NO_PROGMEM
-        pft PrintExtension::printf__( const __FlashStringHelper *format, ... ){
-            va_list vList;
-            va_start( vList, format );
-            const pft p_Return = _printf( format, strlen_P((const char*)format)+1, vList );
-            va_end( vList );
-            return p_Return;
-        }
-
-        pft PrintExtension::_printf( const __FlashStringHelper *format, const int count, const va_list &vList ){
-            char buffer[count];
-            return _printf( strcpy_P( buffer, (const char*)format ), vList );
-        }
-    #endif
-
-
-
-    pft PrintExtension::printf__( const char *format, ... ){
-        va_list vList;
-        va_start( vList, format );
-        const pft p_Return = _printf( format, vList );
-        va_end( vList );
-        return p_Return;
-    }
-
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wattributes"
     #ifndef ISCPP11
@@ -185,8 +212,6 @@
     void parseValue( const char *&format, unsigned int &total ){
         for ( ; *format >= CHAR_ZERO && *format <= CHAR_NINE; ++format )(total *= 10) += *format - CHAR_ZERO;
     }
-
-
 
 
     pft PrintExtension::_printf( const char *format, const va_list &vList ){

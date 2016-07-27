@@ -56,6 +56,13 @@
         typedef uint8_t pfct;
     #endif
 
+    //If using a #define to override printf, give the actual printf another name (printf__).
+    #ifdef PRINTEX_NO_STDOUT
+        #define PRINTF_ALIAS    printf
+    #else
+        #define PRINTF_ALIAS    printf__
+    #endif
+
     class PrintExtension
         :   public Print,
             public PrintConcat<PrintExtension>,
@@ -64,16 +71,16 @@
             public PrintVariadic<PrintExtension>{
         public:
 
-            pft printf__( const char *format, ... );
+            pft PRINTF_ALIAS( const char *format, ... );
 
             #ifndef PRINTEX_NO_PROGMEM
-                pft printf__( const __FlashStringHelper *format, ... );
+                pft PRINTF_ALIAS( const __FlashStringHelper *format, ... );
             #endif
 
         protected:
 
-            friend pft printf__( const char *format, ... );
-            friend pft printf__( const __FlashStringHelper *format, ... );
+            friend pft PRINTF_ALIAS( const char *format, ... );
+            friend pft PRINTF_ALIAS( const __FlashStringHelper *format, ... );
 
             friend class StreamExtension;
             template<typename T> friend struct PrintExWrap;
@@ -142,7 +149,7 @@
             Pass through allowing use of PrintExtension::printf.
         ***/
 
-        pft printf__( const char *format, ... ){
+        pft PRINTF_ALIAS( const char *format, ... ){
             va_list vList;
             va_start( vList, format );
             PrintEx p = *this;
@@ -152,7 +159,7 @@
         }
 
         #ifndef PRINTEX_NO_PROGMEM
-            pft printf__( const __FlashStringHelper *format, ... ){
+            pft PRINTF_ALIAS( const __FlashStringHelper *format, ... ){
                 va_list vList;
                 va_start( vList, format );
                 PrintEx p = *this;
@@ -171,27 +178,11 @@
 
     // A workaround for global printf. Use xprintf to use PrintEx features.
     #ifndef PRINTEX_NO_STDOUT
-
-        #define printf(format, ...)  printf__(format, __VA_ARGS__)
-
-        inline pft printf__( const char *format, ... ){
-            va_list vList;
-            va_start( vList, format );
-            const pft p_Return = PrintEx(*PrintEx::_stdout)._printf( format, vList );
-            va_end( vList );
-            return p_Return;
-        }
+        #define printf(format, ...)  PRINTF_ALIAS(format, __VA_ARGS__)
+         pft PRINTF_ALIAS( const char *format, ... );
 
         #ifndef PRINTEX_NO_PROGMEM
-            inline pft printf__( const __FlashStringHelper *format, ... ){
-                va_list vList;
-                va_start( vList, format );
-                const pft p_Return = PrintEx(*PrintEx::_stdout)._printf( format, strlen_P((const char*)format)+1, vList );
-                va_end( vList );
-                return p_Return;
-            }
+            pft PRINTF_ALIAS( const __FlashStringHelper *format, ... );
         #endif
-
-        #define xprintf(str, ...) PrintEx(*PrintEx::_stdout).printf__(str, __VA_ARGS__);
     #endif
 #endif
