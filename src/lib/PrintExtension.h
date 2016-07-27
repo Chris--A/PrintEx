@@ -142,7 +142,7 @@
             Pass through allowing use of PrintExtension::printf.
         ***/
 
-        pft printf( const char *format, ... ){
+        pft printf__( const char *format, ... ){
             va_list vList;
             va_start( vList, format );
             PrintEx p = *this;
@@ -152,7 +152,7 @@
         }
 
         #ifndef PRINTEX_NO_PROGMEM
-            pft printf( const __FlashStringHelper *format, ... ){
+            pft printf__( const __FlashStringHelper *format, ... ){
                 va_list vList;
                 va_start( vList, format );
                 PrintEx p = *this;
