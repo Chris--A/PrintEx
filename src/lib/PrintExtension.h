@@ -103,13 +103,27 @@
         size_t write( uint8_t data )      { return out.write( data ); }
         Print &out;
 
+        /***
+            wrap function.
+            Takes a target 'Print' object and extends it with the PrintEx API.
+            This allows using a single object to manipulate the object's main
+            functionality, but also the PrintEx enhancements through a single
+            identifier.
+        ***/
+
         template<typename T>
         static PrintExWrap<T> &wrap( T &t ){
             return *transform<PrintExWrap<T>*, T*>(&t);
         }
 
+        /***
+            stdout handling.
+            The global function printf uses _stdout as a target for printing.
+        ***/
+
         #ifndef PRINTEX_NO_STDOUT
             static Print *_stdout;
+            inline static set_stdout( Print *out ){ _stdout = out; }
         #endif
     };
 
