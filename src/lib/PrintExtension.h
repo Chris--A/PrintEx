@@ -72,6 +72,7 @@
 
             friend class StreamExtension;
             template<typename T> friend struct PrintExWrap;
+            template<typename T> friend struct StreamExWrap;
 
             pft _printf( const char *format, const va_list &v_List );
 

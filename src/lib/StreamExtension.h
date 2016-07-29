@@ -40,7 +40,7 @@
         pft printf( const char *format, ... );
     };
 
-	//Forward declaration as StreamEx uses StreamExWrap
+    //Forward declaration as StreamEx uses StreamExWrap
     template<typename T> struct StreamExWrap;
 
     struct StreamEx : StreamExtension{
@@ -51,21 +51,21 @@
         int peek( void )                    { return stream.peek(); }
         int read( void )                    { return stream.read(); }
         size_t write( uint8_t data )        { return stream.write(data); }
-		
-		template<typename T>
-		static StreamExWrap<T> &wrap( T &t ){
-			return *transform<StreamExWrap<T>*, T*>(&t);
-		}
+
+        template<typename T>
+        static StreamExWrap<T> &wrap( T &t ){
+            return *transform<StreamExWrap<T>*, T*>(&t);
+        }
 
         Stream &stream;
     };
-	
+
     template<typename T>
     struct StreamExWrap :
             PrintConcat< StreamExWrap<T> >,
             PrintRepeat< StreamExWrap<T> >,
             ios::OStreamBase< StreamExWrap<T> >,
-			ios::IStreamBase< StreamExWrap<T> >,
+            ios::IStreamBase< StreamExWrap<T> >,
             PrintVariadic< StreamExWrap<T> >,
             T{
 
@@ -97,7 +97,7 @@
             Pass through allowing use of PrintExtension::printf.
         ***/
 
-        pft PRINTF_ALIAS( const char *format, ... ){
+        pft printf( const char *format, ... ){
             va_list vList;
             va_start( vList, format );
             PrintEx p = *this;
@@ -107,7 +107,7 @@
         }
 
         #ifndef PRINTEX_NO_PROGMEM
-            pft PRINTF_ALIAS( const __FlashStringHelper *format, ... ){
+            pft printf( const __FlashStringHelper *format, ... ){
                 va_list vList;
                 va_start( vList, format );
                 PrintEx p = *this;
