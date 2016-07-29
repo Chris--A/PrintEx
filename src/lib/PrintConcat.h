@@ -42,6 +42,9 @@
                 _INLINE_ derived &concat( const T &t, const int i )
                     { return CRTPO.print( t, i ) CRTPO; }
 
+            _INLINE_ derived &concatln()
+                { return CRTPO.println(), CRTPO; }
+
             template< typename T >
                 _INLINE_ derived &concatln( const T &t )
                     { return CRTPO.println( t ), CRTPO; }
