@@ -23,30 +23,48 @@
 
 #ifndef HEADER_STREAMITERATE
     #define HEADER_STREAMITERATE
-	
-	struct StreamIterator{
+
+    /***
+        StreamIterator object.
+        Implements an iterate-able object.
+        This object will keep iterating until there is no more data in the Stream.
+    ***/
+
+    struct StreamIterator{
         StreamIterator( Stream &o, bool endOfStream = false ) : owner(o), current(endOfStream ? -1 : o.read()) {}
         bool operator !=( const StreamIterator &b ){ return b.current != current; }
         StreamIterator &operator ++(){ return this->current = owner.read(), *this; }
         char operator *(){ return (char) this->current; }
-		Stream &owner;
-		int current;
-	};
+        Stream &owner;
+        int current;
+    };
 
-	struct StreamIterate{
-		StreamIterate( Stream &o ) : owner(o) {}
-		StreamIterator begin() { return StreamIterator(owner); }
-		StreamIterator end() { return StreamIterator(owner, true); }
-		Stream &owner;
-	};
-	
-	template< typename derived >
-	struct StreamIteration{
-		StreamIterate each(){ return StreamIterate(CRTPO); }
-		derived &waitForData(){ 
-			while( !CRTPO.available() );
-			return CRTPO;
-		}
-	};
-	
+    /***
+        StreamIterate object.
+        This is a temporary which provides an interface defining the iteration range.
+    ***/
+
+    struct StreamIterate{
+        StreamIterate( Stream &o ) : owner(o) {}
+        StreamIterator begin() { return StreamIterator(owner); }
+        StreamIterator end() { return StreamIterator(owner, true); }
+        Stream &owner;
+    };
+
+    /***
+        StreamIteration interface.
+        This object attaches the iteration functionality to the derived object.
+    ***/
+
+    template< typename derived >
+    struct StreamIteration{
+
+        StreamIterate each(){ return StreamIterate(CRTPO); }
+
+        derived &waitForData(){
+            while( !CRTPO.available() );
+            return CRTPO;
+        }
+    };
+
 #endif
