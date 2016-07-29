@@ -56,7 +56,7 @@
         typename = typename enable_if<!is_base_of<StreamExtension,D>::value>::type
     >
         PrintExTemporary operator<< ( D &print, const T &data ){
-            return PrintExTemporary{print} << data;
+            return PrintExTemporary{print, {}} << data;
     }
 
     template<
