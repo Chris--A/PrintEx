@@ -92,23 +92,23 @@
     #ifndef PRINTEX_NO_STDOUT
 
         //Storage location for 'stdout' Print pointer.
-        Print *PrintEx::_stdout = (Print*) 0x00;
+        Print *_stdout = (Print*) 0x00;
 
         pft PRINTF_ALIAS( const char *format, ... ){
-            if( !PrintEx::_stdout ) return 0;
+            if( !_stdout ) return 0;
             va_list vList;
             va_start( vList, format );
-            const pft p_Return = PrintEx(*PrintEx::_stdout)._printf( format, vList );
+            const pft p_Return = PrintEx(*_stdout)._printf( format, vList );
             va_end( vList );
             return p_Return;
         }
 
         #ifndef PRINTEX_NO_PROGMEM
             pft PRINTF_ALIAS( const __FlashStringHelper *format, ... ){
-                if( !PrintEx::_stdout ) return 0;
+                if( !_stdout ) return 0;
                 va_list vList;
                 va_start( vList, format );
-                const pft p_Return = PrintEx(*PrintEx::_stdout)._printf( format, strlen_P((const char*)format)+1, vList );
+                const pft p_Return = PrintEx(*_stdout)._printf( format, strlen_P((const char*)format)+1, vList );
                 va_end( vList );
                 return p_Return;
             }

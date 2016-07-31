@@ -63,12 +63,34 @@
         #define PRINTF_ALIAS    printf__
     #endif
 
+    /***
+        stdout handling.
+        The global function printf uses _stdout as a target for printing.
+    ***/
+
+    #ifndef PRINTEX_NO_STDOUT
+        extern Print *_stdout;
+        inline static void set_stdout( Print &out ){ _stdout = &out; }
+        inline static void clear_stdout(){ _stdout = (Print*) 0x00; }
+    #endif
+
+    template< typename derived >
+    struct PrintfSupport{
+
+        #ifndef PRINTEX_NO_STDOUT
+            static Print *_stdout;
+            inline void set_stdout(){ ::_stdout = CRTPP; }
+            inline void clear_stdout(){ ::_stdout = (Print*) 0x00; }
+        #endif
+    };
+
     class PrintExtension
         :   public Print,
             public PrintConcat<PrintExtension>,
             public PrintRepeat<PrintExtension>,
             public ios::OStreamBase<PrintExtension>,
-            public PrintVariadic<PrintExtension>{
+            public PrintVariadic<PrintExtension>,
+            public PrintfSupport<PrintExtension>{
         public:
 
             pft PRINTF_ALIAS( const char *format, ... );
@@ -115,17 +137,6 @@
         static PrintExWrap<T> &wrap( T &t ){
             return *transform<PrintExWrap<T>*, T*>(&t);
         }
-
-        /***
-            stdout handling.
-            The global function printf uses _stdout as a target for printing.
-        ***/
-
-        #ifndef PRINTEX_NO_STDOUT
-            static Print *_stdout;
-            inline static void set_stdout( Print &out ){ PrintEx::_stdout = &out; }
-            inline static void clear_stdout(){ PrintEx::_stdout = (Print*) 0x00; }
-        #endif
     };
 
     template<typename T>
@@ -134,6 +145,7 @@
             PrintRepeat< PrintExWrap<T> >,
             ios::OStreamBase< PrintExWrap<T> >,
             PrintVariadic< PrintExWrap<T> >,
+            PrintfSupport< PrintExWrap<T> >,
             T{
 
         /***
