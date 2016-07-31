@@ -123,7 +123,8 @@
 
         #ifndef PRINTEX_NO_STDOUT
             static Print *_stdout;
-            inline static set_stdout( Print &out ){ _stdout = &out; }
+            inline static void set_stdout( Print &out ){ PrintEx::_stdout = &out; }
+            inline static void clear_stdout(){ PrintEx::_stdout = (Print*) 0x00; }
         #endif
     };
 
