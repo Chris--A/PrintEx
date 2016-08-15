@@ -25,6 +25,7 @@
 #include "IStream.h"
 #include "PrintConcat.h"
 #include "PrintRepeat.h"
+#include "StreamIterate.h"
 
 #ifndef HEADER_STREAMEXTENSION
     #define HEADER_STREAMEXTENSION
@@ -35,7 +36,8 @@
         PrintRepeat<StreamExtension>,
         ios::OStreamBase<StreamExtension>,
         ios::IStreamBase<StreamExtension>,
-        PrintVariadic<PrintExtension>
+        PrintVariadic<PrintExtension>,
+		StreamIteration<PrintExtension>
     {
         pft printf( const char *format, ... );
     };
@@ -67,6 +69,7 @@
             ios::OStreamBase< StreamExWrap<T> >,
             ios::IStreamBase< StreamExWrap<T> >,
             PrintVariadic< StreamExWrap<T> >,
+			StreamIteration< StreamExWrap<T> >,
             T{
 
         /***
