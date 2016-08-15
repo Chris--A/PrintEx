@@ -33,8 +33,10 @@
     #define PRINTEX_NO_FLOATING_POINT
     #define PRINTEX_NO_REPEAT
     #define PRINTEX_NO_ERROR_CONDITION
-    #define PRINTEX_NO_SPRINTF
     #define PRINTEX_LARGE_COUNTER
+
+    #define PRINTEX_NO_SPRINTF
+    #define PRINTEX_NO_STDOUT
 ********************************************************************************/
 
 #include "Arduino.h"
@@ -54,21 +56,52 @@
         typedef uint8_t pfct;
     #endif
 
+    //If using a #define to override printf, give the actual printf another name (printf__).
+    #ifdef PRINTEX_NO_STDOUT
+        #define PRINTF_ALIAS    printf
+    #else
+        #define PRINTF_ALIAS    printf__
+    #endif
+
+    /***
+        stdout handling.
+        The global function printf uses _stdout as a target for printing.
+    ***/
+
+    #ifndef PRINTEX_NO_STDOUT
+        extern Print *_stdout;
+        inline static void set_stdout( Print &out ){ _stdout = &out; }
+        inline static void clear_stdout(){ _stdout = (Print*) 0x00; }
+    #endif
+
+    template< typename derived >
+    struct PrintfSupport{
+
+        #ifndef PRINTEX_NO_STDOUT
+            inline void set_stdout(){ ::_stdout = CRTPP; }
+            inline void clear_stdout(){ ::_stdout = (Print*) 0x00; }
+        #endif
+    };
+
     class PrintExtension
         :   public Print,
             public PrintConcat<PrintExtension>,
             public PrintRepeat<PrintExtension>,
             public ios::OStreamBase<PrintExtension>,
-            public PrintVariadic<PrintExtension>{
+            public PrintVariadic<PrintExtension>,
+            public PrintfSupport<PrintExtension>{
         public:
 
-            pft printf( const char *format, ... );
+            pft PRINTF_ALIAS( const char *format, ... );
 
             #ifndef PRINTEX_NO_PROGMEM
-                pft printf( const __FlashStringHelper *format, ... );
+                pft PRINTF_ALIAS( const __FlashStringHelper *format, ... );
             #endif
 
         protected:
+
+            friend pft PRINTF_ALIAS( const char *format, ... );
+            friend pft PRINTF_ALIAS( const __FlashStringHelper *format, ... );
 
             friend class StreamExtension;
             template<typename T> friend struct PrintExWrap;
@@ -92,6 +125,14 @@
         size_t write( uint8_t data )      { return out.write( data ); }
         Print &out;
 
+        /***
+            wrap function.
+            Takes a target 'Print' object and extends it with the PrintEx API.
+            This allows using a single object to manipulate the object's main
+            functionality, but also the PrintEx enhancements through a single
+            identifier.
+        ***/
+
         template<typename T>
         static PrintExWrap<T> &wrap( T &t ){
             return *transform<PrintExWrap<T>*, T*>(&t);
@@ -104,6 +145,7 @@
             PrintRepeat< PrintExWrap<T> >,
             ios::OStreamBase< PrintExWrap<T> >,
             PrintVariadic< PrintExWrap<T> >,
+            PrintfSupport< PrintExWrap<T> >,
             T{
 
         /***
@@ -134,7 +176,7 @@
             Pass through allowing use of PrintExtension::printf.
         ***/
 
-        pft printf( const char *format, ... ){
+        pft PRINTF_ALIAS( const char *format, ... ){
             va_list vList;
             va_start( vList, format );
             PrintEx p = *this;
@@ -144,7 +186,7 @@
         }
 
         #ifndef PRINTEX_NO_PROGMEM
-            pft printf( const __FlashStringHelper *format, ... ){
+            pft PRINTF_ALIAS( const __FlashStringHelper *format, ... ){
                 va_list vList;
                 va_start( vList, format );
                 PrintEx p = *this;
@@ -158,7 +200,17 @@
 
     // Global sprintf replacement. To keep old version define PRINTEX_NO_SPRINTF (does not affect x.printf();)
     #ifndef PRINTEX_NO_SPRINTF
-        #define sprintf(buff, str, ...) GString(buff).printf(str, __VA_ARGS__);
+        #define sprintf(buff, str, ...) GString(buff).printf(str, __VA_ARGS__)
+        #define xprintf(out, str, ...) PrintEx(out).PRINTF_ALIAS(str, __VA_ARGS__)
     #endif
 
+    // A workaround for global printf. Use xprintf to use PrintEx features.
+    #ifndef PRINTEX_NO_STDOUT
+        #define printf(format, ...)  PRINTF_ALIAS(format, __VA_ARGS__)
+         pft PRINTF_ALIAS( const char *format, ... );
+
+        #ifndef PRINTEX_NO_PROGMEM
+            pft PRINTF_ALIAS( const __FlashStringHelper *format, ... );
+        #endif
+    #endif
 #endif

@@ -56,6 +56,68 @@
     #define PRINTF_CONVERT_BUFFER_LEN   24
     #define PRINTF_ERROR_MESSAGE        "Error" //F("Error") may be used also.
 
+    #ifdef printf
+        #undef printf
+    #endif
+
+    /***
+        PrintExtension printf() functionality.
+    ***/
+
+    pft PrintExtension::PRINTF_ALIAS( const char *format, ... ){
+        va_list vList;
+        va_start( vList, format );
+        const pft p_Return = _printf( format, vList );
+        va_end( vList );
+        return p_Return;
+    }
+
+    #ifndef PRINTEX_NO_PROGMEM
+        pft PrintExtension::PRINTF_ALIAS( const __FlashStringHelper *format, ... ){
+            va_list vList;
+            va_start( vList, format );
+            const pft p_Return = _printf( format, strlen_P((const char*)format)+1, vList );
+            va_end( vList );
+            return p_Return;
+        }
+
+        pft PrintExtension::_printf( const __FlashStringHelper *format, const int count, const va_list &vList ){
+            char buffer[count];
+            return _printf( strcpy_P( buffer, (const char*)format ), vList );
+        }
+    #endif
+
+
+    /***
+        Global printf() functionality.
+    ***/
+
+    #ifndef PRINTEX_NO_STDOUT
+
+        //Storage location for 'stdout' Print pointer.
+        Print *_stdout __attribute__((weak)) = (Print*) 0x00;
+
+        pft PRINTF_ALIAS( const char *format, ... ){
+            if( !_stdout ) return 0;
+            va_list vList;
+            va_start( vList, format );
+            const pft p_Return = PrintEx(*_stdout)._printf( format, vList );
+            va_end( vList );
+            return p_Return;
+        }
+
+        #ifndef PRINTEX_NO_PROGMEM
+            pft PRINTF_ALIAS( const __FlashStringHelper *format, ... ){
+                if( !_stdout ) return 0;
+                va_list vList;
+                va_start( vList, format );
+                const pft p_Return = PrintEx(*_stdout)._printf( format, strlen_P((const char*)format)+1, vList );
+                va_end( vList );
+                return p_Return;
+            }
+        #endif
+    #endif
+
     /****************************************************************
         GetParam_XXX functions.
             The variations below proved to be far more efficient
@@ -144,29 +206,6 @@
                 p:    Will write a pointer address. It is a hexadecimal print out formatted to 0x0000
                 %:    Escape character for printing '%'
     ****************************************************************/
-
-    #ifndef PRINTEX_NO_PROGMEM
-        pft PrintExtension::printf( const __FlashStringHelper *format, ... ){
-            va_list vList;
-            va_start( vList, format );
-            const pft p_Return = _printf( format, strlen_P((const char*)format)+1, vList );
-            va_end( vList );
-            return p_Return;
-        }
-
-        pft PrintExtension::_printf( const __FlashStringHelper *format, const int count, const va_list &vList ){
-            char buffer[count];
-            return _printf( strcpy_P( buffer, (const char*)format ), vList );
-        }
-    #endif
-
-    pft PrintExtension::printf( const char *format, ... ){
-        va_list vList;
-        va_start( vList, format );
-        const pft p_Return = _printf( format, vList );
-        va_end( vList );
-        return p_Return;
-    }
 
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wattributes"
