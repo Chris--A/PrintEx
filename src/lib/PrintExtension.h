@@ -78,7 +78,6 @@
     struct PrintfSupport{
 
         #ifndef PRINTEX_NO_STDOUT
-            static Print *_stdout;
             inline void set_stdout(){ ::_stdout = CRTPP; }
             inline void clear_stdout(){ ::_stdout = (Print*) 0x00; }
         #endif
