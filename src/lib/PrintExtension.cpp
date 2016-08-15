@@ -92,7 +92,7 @@
     #ifndef PRINTEX_NO_STDOUT
 
         //Storage location for 'stdout' Print pointer.
-        Print *_stdout = (Print*) 0x00;
+        Print *_stdout __attribute__((weak)) = (Print*) 0x00;
 
         pft PRINTF_ALIAS( const char *format, ... ){
             if( !_stdout ) return 0;
