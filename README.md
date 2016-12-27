@@ -1,4 +1,4 @@
-# `PrintEx` Library for Arduino ![Version 1.1.10](https://img.shields.io/badge/Version-1.2.0-blue.svg)
+# `PrintEx` Library for Arduino ![Version 2.0.0](https://img.shields.io/badge/Version-2.0.0-blue.svg)
 
 **Written by:** *Christopher Andrews*.  
 **Copyright:** _**2013**_*(`GString`)*-_**2016**_*(`PrintEx`)*, *Christopher Andrews, Released under [GNU GPLv3](/LICENSE) licence* (Feel free to contact me via the issues if you would like to discuss a different licence).
@@ -34,8 +34,8 @@ A sample of Arduino libraries which can be extended are as follows:
 
 *A limited number of features require C\+\+11. The basic Arduino's now have this support in IDE versions 1.6.6 and above. The Arduino Zero & ESP8266 already has this enabled. If you are using an old IDE there is some info [here](http://arduino.land/FAQ/content/2/49/en/can-c11-be-used-with-arduino.html) explaining how to enable C\+\+11. However if you are attempting to use an IDE below 1.5.8 you will have to upgrade to make use of the additional features.*
 
-
-- [Basic Usage.](#basic-usage)
+- [Breaking changes in version `2.0.0`](#basic-usage)
+- [Basic Usage](#basic-usage)
   - [Enhancing any `Stream` or `Print` based object](#1-enhancing-any-stream-or-print-based-object)
   - [Streaming data (in/out)](#2-streaming-inout). ![C++11 Only!](https://img.shields.io/badge/Requires-C++11-orange.svg)
   - [Using chainable functions](#3-using-chainable-functions)
@@ -45,8 +45,19 @@ A sample of Arduino libraries which can be extended are as follows:
 - [Custom Configuration](#custom-configuration)
 - [Licence terms and conditions (GNU GPLv3)](/LICENSE)
 - [Credits](#special-thanks)
-
 ---
+
+## Breaking changes in version `2.0.0`
+
+As the API has had certain parts overhauled, there are a few changes which are not backwards compatible.
+
+- `printf` specifiers.  
+  To conform to standard implementations of `printf` has had a few specifier letterings changed.
+  - Flash/PROGMEM strings now use `%S` instead of `%p`.
+  - EEPROM strings now use the specifier `%q` instead of `%r`.
+  - Repeat functionality now uses `%r` instead of `%n`.
+  - `%n` and `%p` have been repurposed to reflect standard implementations.
+
 
 ## Basic Usage
 #### 1. Enhancing any `Stream` or `Print` based object.
@@ -240,15 +251,17 @@ Each element and their set of options is described in the tables below.
     **Name**  | **Description**
   ------------- | -------------
   **`s`** | String ( null terminated ).
-  **`p`** | PROGMEM string. No formatting takes place, the string is printed directly.
-  **`r`** | EEPROM string. No formatting takes place, the string is printed directly.
+  **`S`** | PROGMEM string. No formatting takes place, the string is printed directly.
+  **`q`** | EEPROM string. No formatting takes place, the string is printed directly.
   **`d`** | Signed decimal integer ( 32bits max ).
   **`i`** | Same as **`d`**.
   **`u`** | Unsigned decimal integer ( 32bits max ).
   **`f`** | Decimal floating point number.
   **`x`** | Unsigned decimal integer ( 32bits max ).
   **`c`** | Character.
-  **`n`** | Repeat function ( default character, see length ).
+  **`r`** | Repeat function ( default character, see length ).
+  **`n`** | Parameter is a `signed int*`. The current output count will be written to pointer.
+  **`p`** | Will write a pointer address. It is a hexadecimal print out formatted to `0x0000`
   **`%`** | Escape character for printing **`%`**.
 
 ```Arduino
@@ -258,7 +271,7 @@ StreamEx mySerial = Serial;
 
 void setup() {
   Serial.begin(9600);
-  mySerial.printf( "%20n\nFirst printf use!\n%20n", '=', '=' );
+  mySerial.printf( "%20r\nFirst printf use!\n%20r", '=', '=' );
 }
 
 void loop() {}
