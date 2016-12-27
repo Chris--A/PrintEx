@@ -24,6 +24,11 @@
 #ifndef HEADER_GLOBALS
     #define HEADER_GLOBALS
 
+	/***
+		Platform specific configurations.
+		Do not modify the contents below.
+	***/
+
     /*** Arduino Zero specific ***/
     #ifdef ARDUINO_SAMD_ZERO //ARDUINO_ARCH_SAMD
         #include <cstdarg>

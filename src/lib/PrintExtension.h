@@ -34,7 +34,6 @@
     #define PRINTEX_NO_REPEAT
     #define PRINTEX_NO_ERROR_CONDITION
     #define PRINTEX_LARGE_COUNTER
-
     #define PRINTEX_NO_SPRINTF
     #define PRINTEX_NO_STDOUT
 ********************************************************************************/
