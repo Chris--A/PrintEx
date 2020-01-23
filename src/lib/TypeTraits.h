@@ -106,6 +106,8 @@
     template < typename T, typename U > struct is_same : false_type{};
     template < typename T > struct is_same< T, T > : true_type{};
 
+    template<typename T> struct is_enum : public integral_constant<bool, __is_enum(T)>{};
+
     template< typename T >
         struct is_integer{
             enum{
@@ -232,6 +234,7 @@
         template<class B, class D>
             struct is_base_of<B,D,typename enable_if<
                 !is_array<D>::value &&
+                !is_enum<D>::value &&
                 !is_fundamental<D>::value &&
                 !is_pointer<D>::value>::type
             >{
@@ -245,7 +248,8 @@
         template<class B, class D>
             struct is_base_of<B,D,typename enable_if<
                 is_array<D>::value ||
-                is_fundamental<D>::value ||
+                is_enum<D>::value ||
+                is_fundamental<D>::value||
                 is_pointer<D>::value>::type
             >{
             static const bool value = 0;
